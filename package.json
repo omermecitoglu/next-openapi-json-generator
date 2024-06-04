@@ -1,0 +1,57 @@
+{
+  "name": "@omer-x/next-openapi-json-generator",
+  "version": "0.1.0",
+  "description": "a Next.js plugin to generate OpenAPI documentation from route handlers",
+  "keywords": [
+    "next.js",
+    "swagger",
+    "openapi",
+    "swagger.json",
+    "openapi.json",
+    "generator"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/omermecitoglu/next-openapi-json-generator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/omermecitoglu/next-openapi-json-generator/issues"
+  },
+  "homepage": "https://github.com/omermecitoglu/next-openapi-json-generator#readme",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": {
+    "name": "Omer Mecitoglu",
+    "email": "omer.mecitoglu@gmail.com",
+    "url": "https://omermecitoglu.github.io"
+  },
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "prebuild": "ts-unused-exports tsconfig.json --excludePathsFromReport='src/index'",
+    "build": "webpack build --progress --mode=production",
+    "dev": "webpack build --progress --mode=development --watch"
+  },
+  "dependencies": {
+    "typescript": "^5.4.5",
+    "zod-to-json-schema": "^3.23.0"
+  },
+  "devDependencies": {
+    "@omer-x/eslint-config": "^1.0.7",
+    "@omer-x/openapi-types": "^0.1.0",
+    "@types/node": "^20.13.0",
+    "clean-webpack-plugin": "^4.0.0",
+    "eslint": "^8.57.0",
+    "ts-loader": "^9.5.1",
+    "ts-unused-exports": "^10.1.0",
+    "webpack": "^5.91.0",
+    "webpack-cli": "^5.1.4",
+    "zod": "^3.23.8"
+  }
+}
