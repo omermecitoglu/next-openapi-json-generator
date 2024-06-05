@@ -37,7 +37,7 @@ module.exports = {
   },
   externals: [
     "typescript",
-    "zod-to-json-schema"
+    "zod-to-json-schema",
   ],
   externalsType: "commonjs",
 };

@@ -39,6 +39,7 @@
     "dev": "webpack build --progress --mode=development --watch"
   },
   "dependencies": {
+    "@omer-x/package-metadata": "^0.1.0",
     "typescript": "^5.4.5",
     "zod-to-json-schema": "^3.23.0"
   },

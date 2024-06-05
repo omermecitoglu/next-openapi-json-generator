@@ -1,3 +1,4 @@
+import getPackageMetadata from "@omer-x/package-metadata";
 import { getDirectoryItems } from "./core/dir";
 import { findAppFolderPath, getRouteExports } from "./core/next";
 import { bundlePaths, createRouteRecord } from "./core/route";
@@ -22,11 +23,13 @@ export default async function generateOpenApiSpec(schemas: Record<string, ZodTyp
       ));
     }
   }
+  const metadata = getPackageMetadata();
+
   return {
     openapi: "3.1.0",
     info: {
-      title: "XXXX XXXXX",
-      version: "X.X.X",
+      title: metadata.serviceName,
+      version: metadata.version,
     },
     paths: bundlePaths(validRoutes),
     components: {
