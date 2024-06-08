@@ -1,20 +1,26 @@
 {
   "compilerOptions": {
     "outDir": "dist",
-    "incremental": true,
-    "target": "es5",
-    "module": "commonjs",
-    "strict": true,
-    "declaration": true,
-    "esModuleInterop": true,
+    "target": "ESNext",
+    "lib": ["ESNext"],
+    "allowJs": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noEmit": false,
+    "esModuleInterop": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "incremental": false,
+    "plugins": [
+    ],
     "paths": {
       "~/*": ["./src/*"]
     },
   },
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts",
   ],
   "exclude": ["node_modules"]
 }

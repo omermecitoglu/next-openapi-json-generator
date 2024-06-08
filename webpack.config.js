@@ -38,6 +38,7 @@ module.exports = {
   externals: [
     "typescript",
     "zod-to-json-schema",
+    /^@omer-x\/package-metadata$/,
   ],
   externalsType: "commonjs",
 };
