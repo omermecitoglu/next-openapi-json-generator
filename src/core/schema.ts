@@ -1,5 +1,5 @@
 import zodToJsonSchema from "zod-to-json-schema";
-import type { SchemaObject } from "@omer-x/openapi-types/dist/schema";
+import type { SchemaObject } from "@omer-x/openapi-types/schema";
 import type { ZodType } from "zod";
 
 export function bundleSchemas(schemas: Record<string, ZodType>) {

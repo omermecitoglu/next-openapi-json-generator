@@ -1,6 +1,6 @@
-import type { PathsObject } from "@omer-x/openapi-types/dist/paths";
+import type { PathsObject } from "@omer-x/openapi-types/paths";
 
-type RouteRecord = {
+export type RouteRecord = {
   method: string,
   path: string,
   apiData: object,

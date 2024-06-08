@@ -1,7 +1,7 @@
 import getPackageMetadata from "@omer-x/package-metadata";
 import { getDirectoryItems } from "./core/dir";
 import { findAppFolderPath, getRouteExports } from "./core/next";
-import { bundlePaths, createRouteRecord } from "./core/route";
+import { type RouteRecord, bundlePaths, createRouteRecord } from "./core/route";
 import { bundleSchemas } from "./core/schema";
 import type { OpenApiDocument } from "@omer-x/openapi-types";
 import type { ZodType } from "zod";
@@ -10,9 +10,9 @@ export default async function generateOpenApiSpec(schemas: Record<string, ZodTyp
   const appFolderPath = await findAppFolderPath();
   if (!appFolderPath) throw new Error("This is not a Next.js application!");
   const routes = await getDirectoryItems(appFolderPath, "route.ts");
-  const validRoutes = [];
+  const validRoutes: RouteRecord[] = [];
   for (const route of routes) {
-    const exportedRouteHandlers = await getRouteExports(route);
+    const exportedRouteHandlers = await getRouteExports(route, schemas);
     for (const [method, routeHandler] of Object.entries(exportedRouteHandlers)) {
       if (!routeHandler || !routeHandler.apiData) continue;
       validRoutes.push(createRouteRecord(

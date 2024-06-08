@@ -15,22 +15,18 @@ export async function findAppFolderPath() {
   return null;
 }
 
-function advancedEval(code: string) {
-  try {
-    return eval(code);
-  } catch (error) {
-    if (error instanceof ReferenceError) {
-      const refName = error.message.replace("is not defined", "").trim();
-      return advancedEval(code.replace(new RegExp(`\\b${refName}\\b`, "g"), `"${refName}"`));
-    }
-    throw error;
-    // console.error(error);
-    // return {};
-  }
+function injectSchemas(code: string, refName: string) {
+  return code
+    .replace(new RegExp(`\\b${refName}\\.`, "g"), `global.schemas[${refName}].`)
+    .replace(new RegExp(`\\b${refName}\\b`, "g"), `"${refName}"`);
 }
 
-export async function getRouteExports(routePath: string) {
+export async function getRouteExports(routePath: string, schemas: Record<string, unknown>) {
   const content = await fs.readFile(routePath, "utf-8");
   const code = transpile(content);
-  return advancedEval(code) as Record<string, { apiData?: unknown } | undefined>;
+  const fixedCode = Object.keys(schemas).reduce(injectSchemas, code);
+  (global as Record<string, unknown>).schemas = schemas;
+  const result = eval(fixedCode);
+  delete (global as Record<string, unknown>).schemas;
+  return result as Record<string, { apiData?: unknown } | undefined>;
 }
