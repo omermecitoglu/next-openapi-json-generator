@@ -2,6 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { directoryExists } from "./dir";
 import { transpile } from "./transpile";
+import type { OperationObject } from "@omer-x/openapi-types/operation";
 
 export async function findAppFolderPath() {
   const inSrc = path.resolve(process.cwd(), "src", "app");
@@ -28,5 +29,5 @@ export async function getRouteExports(routePath: string, schemas: Record<string,
   (global as Record<string, unknown>).schemas = schemas;
   const result = eval(fixedCode);
   delete (global as Record<string, unknown>).schemas;
-  return result as Record<string, { apiData?: unknown } | undefined>;
+  return result as Record<string, { apiData?: OperationObject } | undefined>;
 }

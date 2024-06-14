@@ -31,7 +31,7 @@ export default async function generateOpenApiSpec(schemas: Record<string, ZodTyp
       title: metadata.serviceName,
       version: metadata.version,
     },
-    paths: bundlePaths(validRoutes),
+    paths: bundlePaths(validRoutes, schemas),
     components: {
       schemas: bundleSchemas(schemas),
     },
