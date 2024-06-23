@@ -1,6 +1,6 @@
 {
   "name": "@omer-x/next-openapi-json-generator",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "a Next.js plugin to generate OpenAPI documentation from route handlers",
   "keywords": [
     "next.js",
@@ -40,18 +40,18 @@
   },
   "dependencies": {
     "@omer-x/package-metadata": "^0.1.2",
-    "typescript": "^5.4.5",
-    "zod-to-json-schema": "^3.23.0"
+    "typescript": "^5.5.2",
+    "zod-to-json-schema": "^3.23.1"
   },
   "devDependencies": {
     "@omer-x/eslint-config": "^1.0.7",
     "@omer-x/openapi-types": "^0.1.2",
-    "@types/node": "^20.14.2",
+    "@types/node": "^20.14.8",
     "clean-webpack-plugin": "^4.0.0",
     "eslint": "^8.57.0",
     "ts-loader": "^9.5.1",
     "ts-unused-exports": "^10.1.0",
-    "webpack": "^5.92.0",
+    "webpack": "^5.92.1",
     "webpack-cli": "^5.1.4",
     "zod": "^3.23.8"
   },

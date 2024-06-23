@@ -1,4 +1,4 @@
-import zodToJsonSchema from "zod-to-json-schema";
+import convertToOpenAPI from "./zod-to-openapi";
 import type { SchemaObject } from "@omer-x/openapi-types/schema";
 import type { ZodType } from "zod";
 
@@ -29,7 +29,7 @@ export default function maskWithReference(
 ): SchemaObject {
   if (self) {
     for (const [schemaName, zodSchema] of Object.entries(storedSchemas)) {
-      if (deepEqual(schema, zodToJsonSchema(zodSchema))) {
+      if (deepEqual(schema, convertToOpenAPI(zodSchema, false))) {
         return {
           $ref: `#/components/schemas/${schemaName}`,
         };
