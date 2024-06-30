@@ -14,6 +14,7 @@ function getRoutePathName(filePath: string, rootPath: string) {
     .replace(rootPath, "")
     .replace("[", "{")
     .replace("]", "}")
+    .replaceAll("\\", "/")
     .replace("/route.ts", "");
 }
 
