@@ -1,6 +1,6 @@
 {
   "name": "@omer-x/next-openapi-json-generator",
-  "version": "0.2.2",
+  "version": "0.2.4",
   "description": "a Next.js plugin to generate OpenAPI documentation from route handlers",
   "keywords": [
     "next.js",
