@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "@omer-x/package-metadata": "^0.1.2",
+    "minimatch": "^9.0.5",
     "typescript": "^5.5.3",
     "zod-to-json-schema": "^3.23.1"
   },
