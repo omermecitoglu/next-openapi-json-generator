@@ -1,6 +1,7 @@
 import { constants } from "fs";
 import fs from "fs/promises";
 import path from "node:path";
+import { Minimatch } from "minimatch";
 
 export async function directoryExists(dirPath: string) {
   try {
@@ -25,4 +26,16 @@ export async function getDirectoryItems(dirPath: string, targetFileName: string)
     }
   }
   return collection;
+}
+
+export function filterDirectoryItems(rootPath: string, items: string[], include: string[], exclude: string[]) {
+  const includedPatterns = include.map(pattern => new Minimatch(pattern));
+  const excludedPatterns = exclude.map(pattern => new Minimatch(pattern));
+
+  return items.filter(item => {
+    const relativePath = path.relative(rootPath, item);
+    const isIncluded = includedPatterns.some(pattern => pattern.match(relativePath));
+    const isExcluded = excludedPatterns.some(pattern => pattern.match(relativePath));
+    return (isIncluded || !include.length) && !isExcluded;
+  });
 }
