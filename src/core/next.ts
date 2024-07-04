@@ -22,12 +22,22 @@ function injectSchemas(code: string, refName: string) {
     .replace(new RegExp(`\\b${refName}\\b`, "g"), `"${refName}"`);
 }
 
+function safeEval(code: string, routePath: string) {
+  try {
+    return eval(code);
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log(`An error occured while evaluating the route exports from "${routePath}"`);
+    throw error;
+  }
+}
+
 export async function getRouteExports(routePath: string, schemas: Record<string, unknown>) {
   const content = await fs.readFile(routePath, "utf-8");
   const code = transpile(content);
   const fixedCode = Object.keys(schemas).reduce(injectSchemas, code);
   (global as Record<string, unknown>).schemas = schemas;
-  const result = eval(fixedCode);
+  const result = safeEval(fixedCode, routePath);
   delete (global as Record<string, unknown>).schemas;
   return result as Record<string, { apiData?: OperationObject } | undefined>;
 }
