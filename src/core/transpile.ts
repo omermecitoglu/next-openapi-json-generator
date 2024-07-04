@@ -1,7 +1,7 @@
 import { transpile as tsTranspile } from "typescript";
 
 function removeImports(code: string) {
-  return code.replace(/^import\s.+\sfrom\s.+;$/gm, "").trim();
+  return code.replace(/^import\s.+\sfrom\s.+;?$/gm, "").trim();
 }
 
 function fixExports(code: string) {
