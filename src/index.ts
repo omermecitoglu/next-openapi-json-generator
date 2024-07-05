@@ -44,5 +44,5 @@ export default async function generateOpenApiSpec(schemas: Record<string, ZodTyp
       schemas: bundleSchemas(schemas),
     },
     tags: [],
-  } as OpenApiDocument;
+  } as Omit<OpenApiDocument, "components"> & Required<Pick<OpenApiDocument, "components">>;
 }
