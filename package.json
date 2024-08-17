@@ -47,7 +47,7 @@
   },
   "devDependencies": {
     "@omer-x/eslint-config": "^1.0.7",
-    "@omer-x/openapi-types": "^0.1.3",
+    "@omer-x/openapi-types": "^0.2.1",
     "@types/node": "^20.14.9",
     "clean-webpack-plugin": "^4.0.0",
     "eslint": "^8.57.0",
