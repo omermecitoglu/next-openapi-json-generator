@@ -53,7 +53,7 @@ export default function maskWithReference(
     case "object":
       return {
         ...schema,
-        properties: Object.entries(schema.properties).reduce((props, [propName, prop]) => ({
+        properties: Object.entries(schema.properties ?? {}).reduce((props, [propName, prop]) => ({
           ...props,
           [propName]: maskWithReference(prop, storedSchemas, true),
         }), {}),
