@@ -60,13 +60,18 @@ export default Page;
 
 The `generateOpenApiSpec` function takes an object with the following properties:
 
-| Property                 | Type                                        | Description                                                                                                                                                                            |
-| ------------------------ | ------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| models                   | Record<string, [ZodType](https://zod.dev)>  | An object where keys are model names and values are Zod schemas                                                                                                                        |
-| options                  | Object                                      | `(Optional)` An object to customize the functionality of the route definer                                                                                                             |
-| options.include          | string[]                                    | `(Optional)` An array of strings which specifies the routes will be included to the JSON output                                                                                        |
-| options.exclude          | string[]                                    | `(Optional)` An array of strings which specifies the routes will be excluded from the JSON output                                                                                      |
-| options.routeDefinerName | string                                      | `(Optional)` Name of the function that was exported from the [`Next OpenAPI Route Handler`](https://www.npmjs.com/package/@omer-x/next-openapi-route-handler) (Default: `defineRoute`) |
+| Property | Type                                       | Description                                                                        |
+| -------- | ------------------------------------------ | ---------------------------------------------------------------------------------- |
+| models   | Record<string, [ZodType](https://zod.dev)> | An object where keys are model names and values are Zod schemas                    |
+| options  | Object                                     | `(Optional)` An object to customize the functionality of the generator (see below) |
+
+#### Options
+
+| Property         | Type     | Description                                                                                                                                                                            |
+| ---------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| include          | string[] | `(Optional)` An array of strings which specifies the routes will be included to the JSON output                                                                                        |
+| exclude          | string[] | `(Optional)` An array of strings which specifies the routes will be excluded from the JSON output                                                                                      |
+| routeDefinerName | string   | `(Optional)` Name of the function that was exported from the [`Next OpenAPI Route Handler`](https://www.npmjs.com/package/@omer-x/next-openapi-route-handler) (Default: `defineRoute`) |
 
 ### Result
 
