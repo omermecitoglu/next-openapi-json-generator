@@ -10,17 +10,22 @@ import type { ZodType } from "zod";
 type GeneratorOptions = {
   include?: string[],
   exclude?: string[],
+  routeDefinerName?: string,
 };
 
-export default async function generateOpenApiSpec(schemas: Record<string, ZodType>, options?: GeneratorOptions) {
-  const verifiedOptions = verifyOptions(options?.include, options?.exclude);
+export default async function generateOpenApiSpec(schemas: Record<string, ZodType>, {
+  include: includeOption = [],
+  exclude: excludeOption = [],
+  routeDefinerName = "defineRoute",
+}: GeneratorOptions = {}) {
+  const verifiedOptions = verifyOptions(includeOption, excludeOption);
   const appFolderPath = await findAppFolderPath();
   if (!appFolderPath) throw new Error("This is not a Next.js application!");
   const routes = await getDirectoryItems(appFolderPath, "route.ts");
   const verifiedRoutes = filterDirectoryItems(appFolderPath, routes, verifiedOptions.include, verifiedOptions.exclude);
   const validRoutes: RouteRecord[] = [];
   for (const route of verifiedRoutes) {
-    const exportedRouteHandlers = await getRouteExports(route, schemas);
+    const exportedRouteHandlers = await getRouteExports(route, routeDefinerName, schemas);
     for (const [method, routeHandler] of Object.entries(exportedRouteHandlers)) {
       if (!routeHandler || !routeHandler.apiData) continue;
       validRoutes.push(createRouteRecord(

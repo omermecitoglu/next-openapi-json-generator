@@ -32,9 +32,9 @@ function safeEval(code: string, routePath: string) {
   }
 }
 
-export async function getRouteExports(routePath: string, schemas: Record<string, unknown>) {
+export async function getRouteExports(routePath: string, routeDefinerName: string, schemas: Record<string, unknown>) {
   const content = await fs.readFile(routePath, "utf-8");
-  const code = transpile(content);
+  const code = transpile(content, routeDefinerName);
   const fixedCode = Object.keys(schemas).reduce(injectSchemas, code);
   (global as Record<string, unknown>).schemas = schemas;
   const result = safeEval(fixedCode, routePath);

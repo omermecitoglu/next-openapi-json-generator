@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-export function verifyOptions(include: string[] = [], exclude: string[] = []) {
+export function verifyOptions(include: string[], exclude: string[]) {
   if (process.env.NODE_ENV === "development") {
     for (const item of include) {
       if (!item.endsWith("/route.ts")) {

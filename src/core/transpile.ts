@@ -11,10 +11,10 @@ function fixExports(code: string) {
   return `${exportFixer1}\n${code}\n${exportFixer2}`;
 }
 
-export function transpile(rawCode: string) {
+export function transpile(rawCode: string, routeDefinerName: string) {
   const code = fixExports(removeImports(rawCode));
   const parts = [
-    "import createRoute from '@omer-x/next-openapi-route-handler'",
+    `import ${routeDefinerName} from '@omer-x/next-openapi-route-handler';`,
     "import z from 'zod';",
     code,
   ];
