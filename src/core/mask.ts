@@ -1,26 +1,7 @@
+import deepEqual from "~/utils/deepEqual";
 import convertToOpenAPI from "./zod-to-openapi";
 import type { SchemaObject } from "@omer-x/openapi-types/schema";
 import type { ZodType } from "zod";
-
-function deepEqual(a: unknown, b: unknown): boolean {
-  if (typeof a !== typeof b) return false;
-  switch (typeof a) {
-    case "object": {
-      if (a === null) return a === b;
-      if (!b) return false;
-      if (Array.isArray(a)) {
-        if (!Array.isArray(b)) return false;
-        return a.every((item, index) => deepEqual(item, b[index]));
-      }
-      return Object.entries(a).every(([key, value]) => deepEqual(value, (b as Record<string, unknown>)[key]));
-    }
-    case "function":
-    case "symbol":
-      return false;
-    default:
-      return a === b;
-  }
-}
 
 export default function maskWithReference(
   schema: SchemaObject,
