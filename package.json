@@ -35,7 +35,7 @@
   ],
   "scripts": {
     "test": "jest",
-    "prebuild": "ts-unused-exports tsconfig.json --excludePathsFromReport='src/index'",
+    "prebuild": "ts-unused-exports tsconfig.json --excludePathsFromReport='src/index;.config.ts'",
     "build": "webpack build --progress --mode=production",
     "dev": "webpack build --progress --mode=development --watch"
   },
@@ -53,6 +53,7 @@
     "eslint": "^8.57.0",
     "ts-jest": "^29.2.4",
     "ts-loader": "^9.5.1",
+    "ts-node": "^10.9.2",
     "ts-unused-exports": "^10.1.0",
     "webpack": "^5.93.0",
     "webpack-cli": "^5.1.4",
