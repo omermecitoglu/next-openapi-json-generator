@@ -29,7 +29,7 @@ describe("findAppFolderPath", () => {
   });
 });
 
-describe("getRouteExports", async () => {
+describe("getRouteExports", () => {
   const mockSchemas = {
     UserDTO: z.object({
       id: z.string(),
@@ -42,15 +42,16 @@ describe("getRouteExports", async () => {
   };
   const mockRoutePath = "/mock/path";
   const mockRouteDefinerName = "defineRoute";
-  const repoName = "omermecitoglu/example-user-service";
-  const branchName = "main";
-  const filePath = "src/app/users/route.ts";
-  const response = await fetch(`https://raw.githubusercontent.com/${repoName}/refs/heads/${branchName}/${filePath}`);
-  const example = await response.text();
 
   beforeEach(() => {
     jest.clearAllMocks();
-    (fs.readFile as jest.Mock<typeof fs.readFile>).mockResolvedValue(example);
+    jest.spyOn(fs, "readFile").mockImplementation(() => {
+      const repoName = "omermecitoglu/example-user-service";
+      const branchName = "main";
+      const filePath = "src/app/users/route.ts";
+      const url = `https://raw.githubusercontent.com/${repoName}/refs/heads/${branchName}/${filePath}`;
+      return fetch(url).then(response => response.text());
+    });
   });
 
   it("should read the file content", async () => {
