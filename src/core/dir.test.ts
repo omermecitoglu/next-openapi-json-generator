@@ -1,5 +1,22 @@
-import { describe, expect, it } from "@jest/globals";
-import { filterDirectoryItems } from "./dir";
+import fs from "fs/promises";
+import { describe, expect, it, jest } from "@jest/globals";
+import { directoryExists, filterDirectoryItems } from "./dir";
+
+describe("directoryExists", () => {
+  it("should return true if directory exists", async () => {
+    const dirPath = "/projects/app/src/app";
+    jest.spyOn(fs, "access").mockResolvedValueOnce(undefined);
+    const result = await directoryExists(dirPath);
+    expect(result).toBe(true);
+  });
+
+  it("should return false if directory does not exist", async () => {
+    const dirPath = "/projects/app/src/app";
+    jest.spyOn(fs, "access").mockRejectedValueOnce(new Error("Directory not found"));
+    const result = await directoryExists(dirPath);
+    expect(result).toBe(false);
+  });
+});
 
 describe("filterDirectoryItems", () => {
   const rootPath = "/projects/app/src/app";
