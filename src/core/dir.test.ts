@@ -1,6 +1,6 @@
 import fs from "fs/promises";
 import { describe, expect, it, jest } from "@jest/globals";
-import { directoryExists, filterDirectoryItems } from "./dir";
+import { directoryExists, filterDirectoryItems, getDirectoryItems } from "./dir";
 
 describe("directoryExists", () => {
   it("should return true if directory exists", async () => {
@@ -15,6 +15,41 @@ describe("directoryExists", () => {
     jest.spyOn(fs, "access").mockRejectedValueOnce(new Error("Directory not found"));
     const result = await directoryExists(dirPath);
     expect(result).toBe(false);
+  });
+});
+
+describe("getDirectoryItems", () => {
+  it("should return an array of file paths matching the target file name", async () => {
+    const dirPath = "/projects/app/src/app";
+    const targetFileName = "route.ts";
+    jest.spyOn(fs, "readdir").mockResolvedValueOnce(["users", "messages"] as never);
+    jest.spyOn(fs, "stat").mockResolvedValueOnce({ isDirectory: () => true } as never);
+    jest.spyOn(fs, "readdir").mockResolvedValueOnce(["route.ts"] as never);
+    jest.spyOn(fs, "stat").mockResolvedValueOnce({ isDirectory: () => false } as never);
+    jest.spyOn(fs, "stat").mockResolvedValueOnce({ isDirectory: () => true } as never);
+    jest.spyOn(fs, "readdir").mockResolvedValueOnce(["route.ts"] as never);
+    jest.spyOn(fs, "stat").mockResolvedValueOnce({ isDirectory: () => false } as never);
+
+    const result = await getDirectoryItems(dirPath, targetFileName);
+    expect(result).toStrictEqual([
+      "/projects/app/src/app/users/route.ts",
+      "/projects/app/src/app/messages/route.ts",
+    ]);
+  });
+
+  it("should return an empty array if no files match the target file name", async () => {
+    const dirPath = "/projects/app/src/app";
+    const targetFileName = "route.ts";
+    jest.spyOn(fs, "readdir").mockResolvedValueOnce(["users", "messages"] as never);
+    jest.spyOn(fs, "stat").mockResolvedValueOnce({ isDirectory: () => true } as never);
+    jest.spyOn(fs, "readdir").mockResolvedValueOnce(["index.ts"] as never);
+    jest.spyOn(fs, "stat").mockResolvedValueOnce({ isDirectory: () => false } as never);
+    jest.spyOn(fs, "stat").mockResolvedValueOnce({ isDirectory: () => true } as never);
+    jest.spyOn(fs, "readdir").mockResolvedValueOnce(["index.ts"] as never);
+    jest.spyOn(fs, "stat").mockResolvedValueOnce({ isDirectory: () => false } as never);
+
+    const result = await getDirectoryItems(dirPath, targetFileName);
+    expect(result).toStrictEqual([]);
   });
 });
 
