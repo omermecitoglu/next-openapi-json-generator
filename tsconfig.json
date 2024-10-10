@@ -2,7 +2,7 @@
   "compilerOptions": {
     "outDir": "dist",
     "target": "ESNext",
-    "lib": [],
+    "lib": ["ESNext"],
     "allowJs": false,
     "skipLibCheck": true,
     "strict": true,
