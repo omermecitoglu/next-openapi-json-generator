@@ -2,15 +2,15 @@
   "compilerOptions": {
     "outDir": "dist",
     "target": "ESNext",
-    "lib": ["ESNext"],
+    "lib": [],
     "allowJs": false,
     "skipLibCheck": true,
     "strict": true,
     "noEmit": false,
     "declaration": true,
     "esModuleInterop": true,
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "incremental": false,
@@ -21,8 +21,7 @@
     },
   },
   "include": [
-    "src/**/*.ts",
-    "jest.config.ts",
+    "**/*.ts",
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "dist"]
 }
