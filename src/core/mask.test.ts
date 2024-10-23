@@ -23,6 +23,8 @@ describe("maskWithReference", () => {
         id: { type: "string" },
         name: { type: "string" },
       },
+      required: ["id", "name"],
+      additionalProperties: false,
     };
 
     const result = maskWithReference(schema, storedSchemas, true);
@@ -76,6 +78,8 @@ describe("maskWithReference", () => {
         id: { type: "string" },
         name: { type: "string" },
       },
+      required: ["id", "name"],
+      additionalProperties: false,
     };
     const result = maskWithReference(schema, storedSchemas, true);
     expect(result).toEqual({
