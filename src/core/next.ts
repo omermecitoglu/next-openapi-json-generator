@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { directoryExists } from "./dir";
+import { detectMiddlewareName } from "./middleware";
 import { transpile } from "./transpile";
 import type { OperationObject } from "@omer-x/openapi-types/operation";
 
@@ -33,11 +34,18 @@ function safeEval(code: string, routePath: string) {
 }
 
 export async function getRouteExports(routePath: string, routeDefinerName: string, schemas: Record<string, unknown>) {
-  const content = await fs.readFile(routePath, "utf-8");
-  const code = transpile(content, routeDefinerName);
+  const rawCode = await fs.readFile(routePath, "utf-8");
+  const middlewareName = detectMiddlewareName(rawCode);
+  const code = transpile(rawCode, routeDefinerName, middlewareName);
   const fixedCode = Object.keys(schemas).reduce(injectSchemas, code);
   (global as Record<string, unknown>).schemas = schemas;
+  if (middlewareName) {
+    // (global as Record<string, unknown>)[middlewareName] = () => { /* mock */ };
+  }
   const result = safeEval(fixedCode, routePath);
   delete (global as Record<string, unknown>).schemas;
+  if (middlewareName) {
+    // delete (global as Record<string, unknown>)[middlewareName];
+  }
   return result as Record<string, { apiData?: OperationObject } | undefined>;
 }

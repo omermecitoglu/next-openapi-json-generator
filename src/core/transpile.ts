@@ -11,11 +11,16 @@ function fixExports(code: string) {
   return `${exportFixer1}\n${code}\n${exportFixer2}`;
 }
 
-export function transpile(rawCode: string, routeDefinerName: string) {
+function injectMiddlewareFixer(middlewareName: string) {
+  return `const ${middlewareName} = (handler) => handler;`;
+}
+
+export function transpile(rawCode: string, routeDefinerName: string, middlewareName: string | null) {
   const code = fixExports(removeImports(rawCode));
   const parts = [
     `import ${routeDefinerName} from '@omer-x/next-openapi-route-handler';`,
     "import z from 'zod';",
+    middlewareName ? injectMiddlewareFixer(middlewareName) : "",
     code,
   ];
   return tsTranspile(parts.join("\n"));
