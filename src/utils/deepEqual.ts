@@ -6,7 +6,10 @@ export default function deepEqual(a: unknown, b: unknown): boolean {
       if (Array.isArray(a) && Array.isArray(b)) {
         return a.every((item, index) => deepEqual(item, b[index]));
       }
-      return Object.entries(a).every(([key, value]) => deepEqual(value, (b as Record<string, unknown>)[key]));
+      if (Object.keys(a).length !== Object.keys(b).length) return false;
+      return Object.entries(a).every(([key, value]) => {
+        return deepEqual(value, (b as Record<string, unknown>)[key]);
+      });
     }
     case "function":
     case "symbol":
