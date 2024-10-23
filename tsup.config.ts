@@ -9,6 +9,10 @@ export default defineConfig({
   clean: true,
   external: [
   ],
+  noExternal: [
+    "zod-to-json-schema",
+    "@omer-x/package-metadata",
+  ],
   esbuildPlugins: [
   ],
   esbuildOptions(options) {
