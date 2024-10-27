@@ -17,6 +17,7 @@ export default function clearUnusedSchemas({
   return {
     paths,
     components: {
+      ...components,
       schemas: Object.fromEntries(Object.entries(components.schemas).filter(([schemaName]) => {
         const otherSchemas = omit(stringifiedSchemas, schemaName);
         return (
