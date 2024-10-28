@@ -1,5 +1,6 @@
 import getPackageMetadata from "@omer-x/package-metadata";
 import { filterDirectoryItems, getDirectoryItems } from "./dir";
+import isDocumentedRoute from "./isDocumentedRoute";
 import { findAppFolderPath, getRouteExports } from "./next";
 import { verifyOptions } from "./options";
 import { type RouteRecord, bundlePaths, createRouteRecord } from "./route";
@@ -25,6 +26,8 @@ export default async function generateOpenApiSpec(schemas: Record<string, ZodTyp
   const verifiedRoutes = filterDirectoryItems(appFolderPath, routes, verifiedOptions.include, verifiedOptions.exclude);
   const validRoutes: RouteRecord[] = [];
   for (const route of verifiedRoutes) {
+    const isDocumented = await isDocumentedRoute(route);
+    if (!isDocumented) continue;
     const exportedRouteHandlers = await getRouteExports(route, routeDefinerName, schemas);
     for (const [method, routeHandler] of Object.entries(exportedRouteHandlers)) {
       if (!routeHandler || !routeHandler.apiData) continue;
