@@ -52,7 +52,7 @@
   },
   "devDependencies": {
     "@omer-x/eslint-config": "^1.0.7",
-    "@omer-x/openapi-types": "^1.0.0",
+    "@omer-x/openapi-types": "^1.1.0",
     "@types/node": "^22.7.9",
     "eslint": "^8.57.1",
     "semantic-release": "^24.1.3",
