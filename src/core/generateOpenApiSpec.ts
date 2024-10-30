@@ -18,6 +18,7 @@ type GeneratorOptions = {
   routeDefinerName?: string,
   rootPath?: string,
   servers?: ServerObject[],
+  security?: OpenApiDocument["security"],
   securitySchemes?: ComponentsObject["securitySchemes"],
 };
 
@@ -27,6 +28,7 @@ export default async function generateOpenApiSpec(schemas: Record<string, ZodTyp
   routeDefinerName = "defineRoute",
   rootPath: additionalRootPath,
   servers,
+  security,
   securitySchemes,
 }: GeneratorOptions = {}) {
   const verifiedOptions = verifyOptions(includeOption, excludeOption);
@@ -68,6 +70,7 @@ export default async function generateOpenApiSpec(schemas: Record<string, ZodTyp
     },
     servers,
     ...clearUnusedSchemas(pathsAndComponents),
+    security,
     tags: [],
   } as Omit<OpenApiDocument, "components"> & Required<Pick<OpenApiDocument, "components">>;
 }
