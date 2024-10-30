@@ -1,3 +1,4 @@
+import getRoutePathName from "./getRoutePathName";
 import maskOperationSchemas from "./operation-mask";
 import type { OperationObject } from "@omer-x/openapi-types/operation";
 import type { PathsObject } from "@omer-x/openapi-types/paths";
@@ -8,15 +9,6 @@ export type RouteRecord = {
   path: string,
   apiData: OperationObject,
 };
-
-function getRoutePathName(filePath: string, rootPath: string) {
-  return filePath
-    .replace(rootPath, "")
-    .replace("[", "{")
-    .replace("]", "}")
-    .replaceAll("\\", "/")
-    .replace("/route.ts", "");
-}
 
 export function createRouteRecord(method: string, filePath: string, rootPath: string, apiData: OperationObject) {
   return {
