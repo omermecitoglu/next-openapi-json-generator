@@ -8,7 +8,7 @@ describe("getRoutePathName", () => {
   it("should return correct route path by removing rootPath and adjusting path", () => {
     const result = getRoutePathName(
       "/home/omer/Projects/nextjs-app/src/app/users/[id]/route.ts",
-      rootPath
+      rootPath,
     );
     expect(result).toBe("/users/{id}");
   });
@@ -26,7 +26,7 @@ describe("getRoutePathName", () => {
   it("should handle nested folders with parameters", () => {
     const result = getRoutePathName(
       "/home/omer/Projects/nextjs-app/src/app/users/[user]/[post]/route.ts",
-      rootPath
+      rootPath,
     );
     expect(result).toBe("/users/{user}/{post}");
   });
@@ -34,7 +34,7 @@ describe("getRoutePathName", () => {
   it("should remove '/route.ts' if present", () => {
     const result = getRoutePathName(
       "/home/omer/Projects/nextjs-app/src/app/users/test/route.ts",
-      rootPath
+      rootPath,
     );
     expect(result).toBe("/users/test");
   });
@@ -42,7 +42,7 @@ describe("getRoutePathName", () => {
   it("should handle cases with no parameters", () => {
     const result = getRoutePathName(
       "/home/omer/Projects/nextjs-app/src/app/users/home/route.ts",
-      rootPath
+      rootPath,
     );
     expect(result).toBe("/users/home");
   });

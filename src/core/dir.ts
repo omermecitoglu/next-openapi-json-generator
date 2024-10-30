@@ -7,7 +7,7 @@ export async function directoryExists(dirPath: string) {
   try {
     await fs.access(dirPath, constants.F_OK);
     return true;
-  } catch (err) {
+  } catch {
     return false;
   }
 }

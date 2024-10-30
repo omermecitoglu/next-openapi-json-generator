@@ -51,9 +51,9 @@
     "zod-to-json-schema": "^3.23.5"
   },
   "devDependencies": {
-    "@omer-x/eslint-config": "^1.0.7",
+    "@omer-x/eslint-config": "^2.0.2",
     "@types/node": "^22.8.4",
-    "eslint": "^8.57.1",
+    "eslint": "^9.13.0",
     "semantic-release": "^24.2.0",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",

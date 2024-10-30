@@ -6,7 +6,7 @@ import type { ZodType } from "zod";
 export default function maskWithReference(
   schema: SchemaObject,
   storedSchemas: Record<string, ZodType>,
-  self: boolean
+  self: boolean,
 ): SchemaObject {
   if (self) {
     for (const [schemaName, zodSchema] of Object.entries(storedSchemas)) {
