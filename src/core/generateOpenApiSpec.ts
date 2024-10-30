@@ -8,6 +8,7 @@ import { verifyOptions } from "./options";
 import { type RouteRecord, bundlePaths, createRouteRecord } from "./route";
 import { bundleSchemas } from "./schema";
 import type { OpenApiDocument } from "@omer-x/openapi-types";
+import type { ComponentsObject } from "@omer-x/openapi-types/components";
 import type { ServerObject } from "@omer-x/openapi-types/server";
 import type { ZodType } from "zod";
 
@@ -17,6 +18,7 @@ type GeneratorOptions = {
   routeDefinerName?: string,
   rootPath?: string,
   servers?: ServerObject[],
+  securitySchemes?: ComponentsObject["securitySchemes"],
 };
 
 export default async function generateOpenApiSpec(schemas: Record<string, ZodType>, {
@@ -25,6 +27,7 @@ export default async function generateOpenApiSpec(schemas: Record<string, ZodTyp
   routeDefinerName = "defineRoute",
   rootPath: additionalRootPath,
   servers,
+  securitySchemes,
 }: GeneratorOptions = {}) {
   const verifiedOptions = verifyOptions(includeOption, excludeOption);
   const appFolderPath = await findAppFolderPath();
@@ -53,6 +56,7 @@ export default async function generateOpenApiSpec(schemas: Record<string, ZodTyp
     paths: bundlePaths(validRoutes, schemas),
     components: {
       schemas: bundleSchemas(schemas),
+      securitySchemes,
     },
   };
 
