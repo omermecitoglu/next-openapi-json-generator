@@ -1,3 +1,4 @@
+import path from "node:path";
 import getPackageMetadata from "@omer-x/package-metadata";
 import { filterDirectoryItems, getDirectoryItems } from "./dir";
 import isDocumentedRoute from "./isDocumentedRoute";
@@ -12,18 +13,21 @@ type GeneratorOptions = {
   include?: string[],
   exclude?: string[],
   routeDefinerName?: string,
+  rootPath?: string,
 };
 
 export default async function generateOpenApiSpec(schemas: Record<string, ZodType>, {
   include: includeOption = [],
   exclude: excludeOption = [],
   routeDefinerName = "defineRoute",
+  rootPath: additionalRootPath,
 }: GeneratorOptions = {}) {
   const verifiedOptions = verifyOptions(includeOption, excludeOption);
   const appFolderPath = await findAppFolderPath();
   if (!appFolderPath) throw new Error("This is not a Next.js application!");
-  const routes = await getDirectoryItems(appFolderPath, "route.ts");
-  const verifiedRoutes = filterDirectoryItems(appFolderPath, routes, verifiedOptions.include, verifiedOptions.exclude);
+  const rootPath = additionalRootPath ? path.resolve(appFolderPath, "./" + additionalRootPath) : appFolderPath;
+  const routes = await getDirectoryItems(rootPath, "route.ts");
+  const verifiedRoutes = filterDirectoryItems(rootPath, routes, verifiedOptions.include, verifiedOptions.exclude);
   const validRoutes: RouteRecord[] = [];
   for (const route of verifiedRoutes) {
     const isDocumented = await isDocumentedRoute(route);
@@ -34,7 +38,7 @@ export default async function generateOpenApiSpec(schemas: Record<string, ZodTyp
       validRoutes.push(createRouteRecord(
         method.toLocaleLowerCase(),
         route,
-        appFolderPath,
+        rootPath,
         routeHandler.apiData,
       ));
     }
