@@ -1,4 +1,5 @@
 import getPackageMetadata from "@omer-x/package-metadata";
+import clearUnusedSchemas from "./clearUnusedSchemas";
 import { filterDirectoryItems, getDirectoryItems } from "./dir";
 import isDocumentedRoute from "./isDocumentedRoute";
 import { findAppFolderPath, getRouteExports } from "./next";
@@ -41,16 +42,20 @@ export default async function generateOpenApiSpec(schemas: Record<string, ZodTyp
   }
   const metadata = getPackageMetadata();
 
+  const pathsAndComponents = {
+    paths: bundlePaths(validRoutes, schemas),
+    components: {
+      schemas: bundleSchemas(schemas),
+    },
+  };
+
   return {
     openapi: "3.1.0",
     info: {
       title: metadata.serviceName,
       version: metadata.version,
     },
-    paths: bundlePaths(validRoutes, schemas),
-    components: {
-      schemas: bundleSchemas(schemas),
-    },
+    ...clearUnusedSchemas(pathsAndComponents),
     tags: [],
   } as Omit<OpenApiDocument, "components"> & Required<Pick<OpenApiDocument, "components">>;
 }
