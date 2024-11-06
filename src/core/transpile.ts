@@ -1,8 +1,5 @@
 import { transpile as tsTranspile } from "typescript";
-
-function removeImports(code: string) {
-  return code.replace(/^import\s.+\sfrom\s.+;?$/gm, "").trim();
-}
+import removeImports from "~/utils/removeImports";
 
 function fixExports(code: string) {
   const validMethods = ["GET", "POST", "PUT", "PATCH", "DELETE"];
