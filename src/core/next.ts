@@ -1,5 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import type { ExampleStrategy } from "~/types/example";
 import { directoryExists } from "./dir";
 import { detectMiddlewareName } from "./middleware";
 import { transpile } from "./transpile";
@@ -47,5 +48,5 @@ export async function getRouteExports(routePath: string, routeDefinerName: strin
   if (middlewareName) {
     // delete (global as Record<string, unknown>)[middlewareName];
   }
-  return result as Record<string, { apiData?: OperationObject } | undefined>;
+  return result as Record<string, { apiData?: OperationObject, exampleStrategy?: ExampleStrategy } | undefined>;
 }

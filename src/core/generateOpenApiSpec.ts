@@ -49,6 +49,7 @@ export default async function generateOpenApiSpec(schemas: Record<string, ZodTyp
         route,
         rootPath,
         routeHandler.apiData,
+        routeHandler.exampleStrategy,
       ));
     }
   }
