@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { directoryExists } from "./dir";
+import injectSchemas from "./injectSchemas";
 import { detectMiddlewareName } from "./middleware";
 import { transpile } from "./transpile";
 import type { OperationObject } from "@omer-x/openapi-types/operation";
@@ -15,12 +16,6 @@ export async function findAppFolderPath() {
     return inRoot;
   }
   return null;
-}
-
-function injectSchemas(code: string, refName: string) {
-  return code
-    .replace(new RegExp(`\\b${refName}\\.`, "g"), `global.schemas[${refName}].`)
-    .replace(new RegExp(`\\b${refName}\\b`, "g"), `"${refName}"`);
 }
 
 function safeEval(code: string, routePath: string) {
@@ -39,13 +34,7 @@ export async function getRouteExports(routePath: string, routeDefinerName: strin
   const code = transpile(rawCode, routeDefinerName, middlewareName);
   const fixedCode = Object.keys(schemas).reduce(injectSchemas, code);
   (global as Record<string, unknown>).schemas = schemas;
-  if (middlewareName) {
-    // (global as Record<string, unknown>)[middlewareName] = () => { /* mock */ };
-  }
   const result = safeEval(fixedCode, routePath);
   delete (global as Record<string, unknown>).schemas;
-  if (middlewareName) {
-    // delete (global as Record<string, unknown>)[middlewareName];
-  }
   return result as Record<string, { apiData?: OperationObject } | undefined>;
 }
