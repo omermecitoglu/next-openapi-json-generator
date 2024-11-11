@@ -1,6 +1,6 @@
 import path from "node:path";
 import getPackageMetadata from "@omer-x/package-metadata";
-import clearUnusedSchemas from "./clearUnusedSchemas";
+import clearUnusedSchemasFunction from "./clearUnusedSchemas";
 import { filterDirectoryItems, getDirectoryItems } from "./dir";
 import isDocumentedRoute from "./isDocumentedRoute";
 import { findAppFolderPath, getRouteExports } from "./next";
@@ -20,6 +20,7 @@ type GeneratorOptions = {
   servers?: ServerObject[],
   security?: OpenApiDocument["security"],
   securitySchemes?: ComponentsObject["securitySchemes"],
+  clearUnusedSchemas?: boolean,
 };
 
 export default async function generateOpenApiSpec(schemas: Record<string, ZodType>, {
@@ -30,6 +31,7 @@ export default async function generateOpenApiSpec(schemas: Record<string, ZodTyp
   servers,
   security,
   securitySchemes,
+  clearUnusedSchemas: clearUnusedSchemasOption = true,
 }: GeneratorOptions = {}) {
   const verifiedOptions = verifyOptions(includeOption, excludeOption);
   const appFolderPath = await findAppFolderPath();
@@ -69,7 +71,7 @@ export default async function generateOpenApiSpec(schemas: Record<string, ZodTyp
       version: metadata.version,
     },
     servers,
-    ...clearUnusedSchemas(pathsAndComponents),
+    ...(clearUnusedSchemasOption ? clearUnusedSchemasFunction(pathsAndComponents) : pathsAndComponents),
     security,
     tags: [],
   } as Omit<OpenApiDocument, "components"> & Required<Pick<OpenApiDocument, "components">>;
