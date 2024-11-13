@@ -1,3 +1,5 @@
+import generateRandomString from "./generateRandomString";
+
 export function preserveStrings(code: string) {
   let replacements = {} as Record<string, string>;
 
@@ -16,8 +18,4 @@ export function restoreStrings(code: string, replacements: Record<string, string
   return code.replace(/<@~(.*?)~@>/g, (_, replacementId) => {
     return replacements[replacementId];
   });
-}
-
-function generateRandomString(length: number) {
-  return [...Array(length)].map(() => Math.random().toString(36)[2]).join("");
 }
