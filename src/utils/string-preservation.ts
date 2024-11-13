@@ -3,11 +3,11 @@ import generateRandomString from "./generateRandomString";
 export function preserveStrings(code: string) {
   let replacements = {} as Record<string, string>;
 
-  const output = code.replace(/(['"`])([^'`"]+)\1/g, replacedString => {
+  const output = code.replace(/(['"`])((?:\\.|(?!\1).)*)\1/g, (match, quote, content) => {
     const replacementId = generateRandomString(32);
     replacements = {
       ...replacements,
-      [replacementId]: replacedString,
+      [replacementId]: `${quote}${content}${quote}`,
     };
     return `<@~${replacementId}~@>`;
   });
