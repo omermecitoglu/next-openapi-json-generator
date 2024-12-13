@@ -67,4 +67,26 @@ describe("convertToOpenAPI", () => {
 
     expect(openAPISchema).toEqual(expectedSchema);
   });
+
+  it("should handle file type correctly in an object", () => {
+    const zodSchema = z.object({
+      file: z.instanceof(File),
+    });
+
+    const openAPISchema = convertToOpenAPI(zodSchema, false);
+
+    const expectedSchema: SchemaObject = {
+      type: "object",
+      properties: {
+        file: {
+          type: "string",
+          format: "binary",
+        },
+      },
+      required: ["file"],
+      additionalProperties: false,
+    };
+
+    expect(openAPISchema).toEqual(expectedSchema);
+  });
 });
