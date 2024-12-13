@@ -53,4 +53,32 @@ describe("injectSchemas", () => {
       });
     `);
   });
+
+  it("should wrap the imported queryParams schema name with global.schemas", () => {
+    const code = `
+      const { GET } = defineRoute({
+        queryParams: User,
+      });
+    `;
+    const output = injectSchemas(code, "User");
+    expect(output).toBe(`
+      const { GET } = defineRoute({
+        queryParams: global.schemas["User"],
+      });
+    `);
+  });
+
+  it("should wrap the imported pathParams schema name with global.schemas", () => {
+    const code = `
+      const { GET } = defineRoute({
+        pathParams: User,
+      });
+    `;
+    const output = injectSchemas(code, "User");
+    expect(output).toBe(`
+      const { GET } = defineRoute({
+        pathParams: global.schemas["User"],
+      });
+    `);
+  });
 });
