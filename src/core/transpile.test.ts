@@ -44,4 +44,9 @@ describe("transpile", () => {
     const result = transpile("", "defineRoute", null);
     expect(result).not.toContain("require(\"zod\");");
   });
+
+  it("should inject a placeholder function for the middleware", () => {
+    const result = transpile("", "defineRoute", "myAwesomeMiddleware");
+    expect(result).toContain("var myAwesomeMiddleware = function (handler) { return handler; };");
+  });
 });
