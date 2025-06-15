@@ -67,9 +67,10 @@ export default async function generateOpenApiSpec(schemas: Record<string, ZodTyp
 
   return {
     openapi: "3.1.0",
-    info: info ?? {
+    info: {
       title: metadata.serviceName,
       version: metadata.version,
+      ...(info ?? {}),
     },
     servers,
     ...(clearUnusedSchemasOption ? clearUnusedSchemasFunction(pathsAndComponents) : pathsAndComponents),
