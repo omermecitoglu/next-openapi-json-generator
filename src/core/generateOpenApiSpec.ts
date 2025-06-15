@@ -9,7 +9,6 @@ import { type RouteRecord, bundlePaths, createRouteRecord } from "./route";
 import { bundleSchemas } from "./schema";
 import type { OpenApiDocument } from "@omer-x/openapi-types";
 import type { ComponentsObject } from "@omer-x/openapi-types/components";
-import type { ServerObject } from "@omer-x/openapi-types/server";
 import type { ZodType } from "zod";
 
 type GeneratorOptions = {
@@ -17,7 +16,8 @@ type GeneratorOptions = {
   exclude?: string[],
   routeDefinerName?: string,
   rootPath?: string,
-  servers?: ServerObject[],
+  info?: OpenApiDocument["info"],
+  servers?: OpenApiDocument["servers"],
   security?: OpenApiDocument["security"],
   securitySchemes?: ComponentsObject["securitySchemes"],
   clearUnusedSchemas?: boolean,
@@ -28,6 +28,7 @@ export default async function generateOpenApiSpec(schemas: Record<string, ZodTyp
   exclude: excludeOption = [],
   routeDefinerName = "defineRoute",
   rootPath: additionalRootPath,
+  info,
   servers,
   security,
   securitySchemes,
@@ -66,7 +67,7 @@ export default async function generateOpenApiSpec(schemas: Record<string, ZodTyp
 
   return {
     openapi: "3.1.0",
-    info: {
+    info: info ?? {
       title: metadata.serviceName,
       version: metadata.version,
     },
