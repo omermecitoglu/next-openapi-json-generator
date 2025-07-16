@@ -1,4 +1,4 @@
-import generateRandomString from "./generateRandomString";
+import { generateRandomString } from "./generateRandomString";
 
 export function preserveStrings(code: string) {
   let replacements = {} as Record<string, string>;

@@ -1,16 +1,14 @@
-import { beforeEach, describe, expect, it, jest } from "@jest/globals";
-import generateRandomString from "./generateRandomString";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import * as utils from "./generateRandomString";
 import { preserveStrings, restoreStrings } from "./string-preservation";
-
-jest.mock("./generateRandomString");
 
 describe("preserveStrings", () => {
   beforeEach(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
   });
 
   it("should replace string values with placeholders and return the mapping of replacements", () => {
-    (generateRandomString as jest.Mock).mockReturnValueOnce("RANDOM_GENERATED_STRING");
+    vi.spyOn(utils, "generateRandomString").mockReturnValueOnce("RANDOM_GENERATED_STRING");
 
     const code = `
       console.log({

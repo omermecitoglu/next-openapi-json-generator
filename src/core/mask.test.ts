@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, jest } from "@jest/globals";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import z, { type ZodType } from "zod";
 import maskWithReference from "./mask";
 import type { SchemaObject } from "@omer-x/openapi-types/schema";
@@ -13,7 +13,7 @@ describe("maskWithReference", () => {
   };
 
   beforeEach(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
   });
 
   it("should return a reference if schema matches a stored schema", () => {

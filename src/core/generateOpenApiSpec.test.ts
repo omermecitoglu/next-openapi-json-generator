@@ -1,13 +1,16 @@
 import fs from "node:fs/promises";
-import { beforeEach, describe, expect, it, jest } from "@jest/globals";
-import getPackageMetadata from "@omer-x/package-metadata";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import z from "zod";
-import { filterDirectoryItems, getDirectoryItems } from "./dir";
+import * as dirUtils from "./dir";
 import generateOpenApiSpec from "./generateOpenApiSpec";
 import * as next from "./next";
 
-jest.mock("./dir");
-jest.mock("@omer-x/package-metadata");
+vi.mock("@omer-x/package-metadata", () => ({
+  default: vi.fn(() => ({
+    serviceName: "Test Service",
+    version: "1.0.0",
+  })),
+}));
 
 describe("generateOpenApiSpec", () => {
   const schemas = {
@@ -22,11 +25,11 @@ describe("generateOpenApiSpec", () => {
   };
 
   beforeEach(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
   });
 
   it("should throw an error if not a Next.js application", async () => {
-    jest.spyOn(next, "findAppFolderPath").mockResolvedValueOnce(null);
+    vi.spyOn(next, "findAppFolderPath").mockResolvedValueOnce(null);
 
     await expect(generateOpenApiSpec(schemas)).rejects.toThrow("This is not a Next.js application!");
   });
@@ -38,16 +41,16 @@ describe("generateOpenApiSpec", () => {
     const response = await fetch(`https://raw.githubusercontent.com/${repoName}/refs/heads/${branchName}/${filePath}`);
     const example = await response.text();
 
-    jest.spyOn(next, "findAppFolderPath").mockResolvedValueOnce("/app");
-    (getDirectoryItems as jest.Mock<typeof getDirectoryItems>).mockResolvedValue([
+    vi.spyOn(next, "findAppFolderPath").mockResolvedValueOnce("/app");
+    vi.spyOn(dirUtils, "getDirectoryItems").mockResolvedValueOnce([
       "/app/test/route.ts",
       "/app/api/users/route.ts",
     ]);
-    (filterDirectoryItems as jest.Mock<typeof filterDirectoryItems>).mockReturnValue([
+    vi.spyOn(dirUtils, "filterDirectoryItems").mockReturnValueOnce([
       "/app/test/route.ts",
       "/app/api/users/route.ts",
     ]);
-    const readFileSpy = jest.spyOn(fs, "readFile").mockImplementation(routePath => {
+    const readFileSpy = vi.spyOn(fs, "readFile").mockImplementation(routePath => {
       switch (routePath) {
         case "/app/test/route.ts":
           return Promise.resolve(example);
@@ -57,10 +60,6 @@ describe("generateOpenApiSpec", () => {
           throw new Error("Unexpected route path");
       }
       // do nothing
-    });
-    (getPackageMetadata as jest.Mock).mockReturnValue({
-      serviceName: "Test Service",
-      version: "1.0.0",
     });
 
     const result = await generateOpenApiSpec(schemas);
@@ -213,16 +212,16 @@ describe("generateOpenApiSpec", () => {
     const response = await fetch(`https://raw.githubusercontent.com/${repoName}/refs/heads/${branchName}/${filePath}`);
     const example = await response.text();
 
-    jest.spyOn(next, "findAppFolderPath").mockResolvedValueOnce("/app");
-    (getDirectoryItems as jest.Mock<typeof getDirectoryItems>).mockResolvedValue([
+    vi.spyOn(next, "findAppFolderPath").mockResolvedValueOnce("/app");
+    vi.spyOn(dirUtils, "getDirectoryItems").mockResolvedValueOnce([
       "/app/api/v1/test/route.ts",
       "/app/api/v1/users/route.ts",
     ]);
-    (filterDirectoryItems as jest.Mock<typeof filterDirectoryItems>).mockReturnValue([
+    vi.spyOn(dirUtils, "filterDirectoryItems").mockReturnValueOnce([
       "/app/api/v1/test/route.ts",
       "/app/api/v1/users/route.ts",
     ]);
-    const readFileSpy = jest.spyOn(fs, "readFile").mockImplementation(routePath => {
+    const readFileSpy = vi.spyOn(fs, "readFile").mockImplementation(routePath => {
       switch (routePath) {
         case "/app/api/v1/test/route.ts":
           return Promise.resolve(example);
@@ -232,10 +231,6 @@ describe("generateOpenApiSpec", () => {
           throw new Error("Unexpected route path");
       }
       // do nothing
-    });
-    (getPackageMetadata as jest.Mock).mockReturnValue({
-      serviceName: "Test Service",
-      version: "1.0.0",
     });
 
     const result = await generateOpenApiSpec(schemas, { rootPath: "/api/v1" });

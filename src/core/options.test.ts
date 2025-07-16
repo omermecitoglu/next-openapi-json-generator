@@ -1,11 +1,11 @@
-import { afterAll, beforeEach, describe, expect, it, jest } from "@jest/globals";
+import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { verifyOptions } from "./options";
 
 describe("verifyOptions", () => {
   const originalEnv = process.env.NODE_ENV;
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   afterAll(() => {
@@ -34,9 +34,7 @@ describe("verifyOptions", () => {
 
   it("should log invalid paths in development mode", () => {
     process.env.NODE_ENV = "development";
-    const consoleLogSpy = jest.spyOn(console, "log").mockImplementation(() => {
-      // do nothing
-    });
+    const consoleLogSpy = vi.spyOn(console, "log").mockImplementation(() => { /* do nothing */ });
 
     const include = ["valid/route.ts", "invalid/path.ts"];
     const exclude = ["another/valid/route.ts", "another/invalid/path.ts"];
@@ -50,7 +48,7 @@ describe("verifyOptions", () => {
 
   it("should not log invalid paths in non-development mode", () => {
     process.env.NODE_ENV = "production";
-    const consoleLogSpy = jest.spyOn(console, "log").mockImplementation(() => {
+    const consoleLogSpy = vi.spyOn(console, "log").mockImplementation(() => {
       // do nothing
     });
 

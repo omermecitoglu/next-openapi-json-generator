@@ -1,18 +1,18 @@
 import fs from "fs/promises";
-import { describe, expect, it, jest } from "@jest/globals";
+import { describe, expect, it, vi } from "vitest";
 import { directoryExists, filterDirectoryItems, getDirectoryItems } from "./dir";
 
 describe("directoryExists", () => {
   it("should return true if directory exists", async () => {
     const dirPath = "/projects/app/src/app";
-    jest.spyOn(fs, "access").mockResolvedValueOnce(undefined);
+    vi.spyOn(fs, "access").mockResolvedValueOnce(undefined);
     const result = await directoryExists(dirPath);
     expect(result).toBe(true);
   });
 
   it("should return false if directory does not exist", async () => {
     const dirPath = "/projects/app/src/app";
-    jest.spyOn(fs, "access").mockRejectedValueOnce(new Error("Directory not found"));
+    vi.spyOn(fs, "access").mockRejectedValueOnce(new Error("Directory not found"));
     const result = await directoryExists(dirPath);
     expect(result).toBe(false);
   });
@@ -22,13 +22,13 @@ describe("getDirectoryItems", () => {
   it("should return an array of file paths matching the target file name", async () => {
     const dirPath = "/projects/app/src/app";
     const targetFileName = "route.ts";
-    jest.spyOn(fs, "readdir").mockResolvedValueOnce(["users", "messages"] as never);
-    jest.spyOn(fs, "stat").mockResolvedValueOnce({ isDirectory: () => true } as never);
-    jest.spyOn(fs, "readdir").mockResolvedValueOnce(["route.ts"] as never);
-    jest.spyOn(fs, "stat").mockResolvedValueOnce({ isDirectory: () => false } as never);
-    jest.spyOn(fs, "stat").mockResolvedValueOnce({ isDirectory: () => true } as never);
-    jest.spyOn(fs, "readdir").mockResolvedValueOnce(["route.ts"] as never);
-    jest.spyOn(fs, "stat").mockResolvedValueOnce({ isDirectory: () => false } as never);
+    vi.spyOn(fs, "readdir").mockResolvedValueOnce(["users", "messages"] as never);
+    vi.spyOn(fs, "stat").mockResolvedValueOnce({ isDirectory: () => true } as never);
+    vi.spyOn(fs, "readdir").mockResolvedValueOnce(["route.ts"] as never);
+    vi.spyOn(fs, "stat").mockResolvedValueOnce({ isDirectory: () => false } as never);
+    vi.spyOn(fs, "stat").mockResolvedValueOnce({ isDirectory: () => true } as never);
+    vi.spyOn(fs, "readdir").mockResolvedValueOnce(["route.ts"] as never);
+    vi.spyOn(fs, "stat").mockResolvedValueOnce({ isDirectory: () => false } as never);
 
     const result = await getDirectoryItems(dirPath, targetFileName);
     expect(result).toStrictEqual([
@@ -40,13 +40,13 @@ describe("getDirectoryItems", () => {
   it("should return an empty array if no files match the target file name", async () => {
     const dirPath = "/projects/app/src/app";
     const targetFileName = "route.ts";
-    jest.spyOn(fs, "readdir").mockResolvedValueOnce(["users", "messages"] as never);
-    jest.spyOn(fs, "stat").mockResolvedValueOnce({ isDirectory: () => true } as never);
-    jest.spyOn(fs, "readdir").mockResolvedValueOnce(["index.ts"] as never);
-    jest.spyOn(fs, "stat").mockResolvedValueOnce({ isDirectory: () => false } as never);
-    jest.spyOn(fs, "stat").mockResolvedValueOnce({ isDirectory: () => true } as never);
-    jest.spyOn(fs, "readdir").mockResolvedValueOnce(["index.ts"] as never);
-    jest.spyOn(fs, "stat").mockResolvedValueOnce({ isDirectory: () => false } as never);
+    vi.spyOn(fs, "readdir").mockResolvedValueOnce(["users", "messages"] as never);
+    vi.spyOn(fs, "stat").mockResolvedValueOnce({ isDirectory: () => true } as never);
+    vi.spyOn(fs, "readdir").mockResolvedValueOnce(["index.ts"] as never);
+    vi.spyOn(fs, "stat").mockResolvedValueOnce({ isDirectory: () => false } as never);
+    vi.spyOn(fs, "stat").mockResolvedValueOnce({ isDirectory: () => true } as never);
+    vi.spyOn(fs, "readdir").mockResolvedValueOnce(["index.ts"] as never);
+    vi.spyOn(fs, "stat").mockResolvedValueOnce({ isDirectory: () => false } as never);
 
     const result = await getDirectoryItems(dirPath, targetFileName);
     expect(result).toStrictEqual([]);

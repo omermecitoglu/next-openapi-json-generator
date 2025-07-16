@@ -1,4 +1,4 @@
-import { describe, expect, it } from "@jest/globals";
+import { describe, expect, it } from "vitest";
 import { type ZodType, z } from "zod";
 import { bundlePaths, createRouteRecord } from "./route";
 import type { OperationObject } from "@omer-x/openapi-types/operation";

@@ -1,5 +1,5 @@
 import path from "node:path";
-import { describe, expect, it, jest } from "@jest/globals";
+import { describe, expect, it, vi } from "vitest";
 import getRoutePathName from "./getRoutePathName";
 
 describe("getRoutePathName", () => {
@@ -14,8 +14,8 @@ describe("getRoutePathName", () => {
   });
 
   it("should replace backslashes with forward slashes", () => {
-    jest.spyOn(path, "dirname").mockReturnValueOnce("C:\\users\\omer\\Projects\\nextjs-app\\src\\app\\users\\[id]");
-    jest.spyOn(path, "relative").mockReturnValueOnce("users\\[id]");
+    vi.spyOn(path, "dirname").mockReturnValueOnce("C:\\users\\omer\\Projects\\nextjs-app\\src\\app\\users\\[id]");
+    vi.spyOn(path, "relative").mockReturnValueOnce("users\\[id]");
     const result = getRoutePathName(
       "C:\\users\\omer\\Projects\\nextjs-app\\src\\app\\users\\[id]\\route.ts",
       "C:\\users\\omer\\Projects\\nextjs-app\\src\\app",
