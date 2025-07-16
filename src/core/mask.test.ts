@@ -25,6 +25,8 @@ describe("maskWithReference", () => {
       },
       required: ["id", "name"],
       additionalProperties: false,
+      // @ts-expect-error: @omer-x/openapi-types doesn't have this
+      $schema: "https://json-schema.org/draft/2020-12/schema",
     };
 
     const result = maskWithReference(schema, storedSchemas, true);
@@ -80,6 +82,8 @@ describe("maskWithReference", () => {
       },
       required: ["id", "name"],
       additionalProperties: false,
+      // @ts-expect-error: @omer-x/openapi-types doesn't have this
+      $schema: "https://json-schema.org/draft/2020-12/schema",
     };
     const result = maskWithReference(schema, storedSchemas, true);
     expect(result).toEqual({

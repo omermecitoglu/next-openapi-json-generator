@@ -64,7 +64,7 @@ describe("generateOpenApiSpec", () => {
 
     const result = await generateOpenApiSpec(schemas);
 
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       openapi: "3.1.0",
       info: {
         title: "Test Service",
@@ -78,13 +78,11 @@ describe("generateOpenApiSpec", () => {
             operationId: "getUsers",
             parameters: [
               {
-                description: "List of the column names",
                 in: "query",
                 name: "select",
-                required: false,
+                required: true,
                 schema: {
                   default: [],
-                  description: "List of the column names",
                   items: {
                     enum: [
                       "id",
@@ -96,7 +94,6 @@ describe("generateOpenApiSpec", () => {
                 },
               },
             ],
-            requestBody: undefined,
             responses: {
               200: {
                 content: {
@@ -112,11 +109,9 @@ describe("generateOpenApiSpec", () => {
                 description: "Returns a list of users",
               },
               400: {
-                content: undefined,
                 description: "Bad Request",
               },
               500: {
-                content: undefined,
                 description: "Internal Server Error",
               },
             },
@@ -127,7 +122,6 @@ describe("generateOpenApiSpec", () => {
           post: {
             description: "Create a new user",
             operationId: "createUser",
-            parameters: undefined,
             requestBody: {
               content: {
                 "application/json": {
@@ -150,11 +144,9 @@ describe("generateOpenApiSpec", () => {
                 description: "User created successfully",
               },
               400: {
-                content: undefined,
                 description: "Bad Request",
               },
               409: {
-                content: undefined,
                 description: "Email already exists",
               },
               500: {
@@ -183,6 +175,7 @@ describe("generateOpenApiSpec", () => {
             },
             additionalProperties: false,
             required: ["id", "name"],
+            $schema: "https://json-schema.org/draft/2020-12/schema",
           },
           NewUserDTO: {
             type: "object",
@@ -196,6 +189,7 @@ describe("generateOpenApiSpec", () => {
             },
             additionalProperties: false,
             required: ["name"],
+            $schema: "https://json-schema.org/draft/2020-12/schema",
           },
         },
       },
@@ -249,13 +243,11 @@ describe("generateOpenApiSpec", () => {
             operationId: "getUsers",
             parameters: [
               {
-                description: "List of the column names",
                 in: "query",
                 name: "select",
-                required: false,
+                required: true,
                 schema: {
                   default: [],
-                  description: "List of the column names",
                   items: {
                     enum: [
                       "id",
@@ -267,7 +259,6 @@ describe("generateOpenApiSpec", () => {
                 },
               },
             ],
-            requestBody: undefined,
             responses: {
               200: {
                 content: {
@@ -283,11 +274,9 @@ describe("generateOpenApiSpec", () => {
                 description: "Returns a list of users",
               },
               400: {
-                content: undefined,
                 description: "Bad Request",
               },
               500: {
-                content: undefined,
                 description: "Internal Server Error",
               },
             },
@@ -298,7 +287,6 @@ describe("generateOpenApiSpec", () => {
           post: {
             description: "Create a new user",
             operationId: "createUser",
-            parameters: undefined,
             requestBody: {
               content: {
                 "application/json": {
@@ -321,11 +309,9 @@ describe("generateOpenApiSpec", () => {
                 description: "User created successfully",
               },
               400: {
-                content: undefined,
                 description: "Bad Request",
               },
               409: {
-                content: undefined,
                 description: "Email already exists",
               },
               500: {
@@ -354,6 +340,7 @@ describe("generateOpenApiSpec", () => {
             },
             additionalProperties: false,
             required: ["id", "name"],
+            $schema: "https://json-schema.org/draft/2020-12/schema",
           },
           NewUserDTO: {
             type: "object",
@@ -367,6 +354,7 @@ describe("generateOpenApiSpec", () => {
             },
             additionalProperties: false,
             required: ["name"],
+            $schema: "https://json-schema.org/draft/2020-12/schema",
           },
         },
       },

@@ -125,10 +125,12 @@ describe("bundlePaths", () => {
                       email: {
                         type: "string",
                         format: "email",
+                        pattern: "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$",
                       },
                     },
                     required: ["name", "email"],
                     additionalProperties: false,
+                    $schema: "https://json-schema.org/draft/2020-12/schema",
                   },
                 },
               },
@@ -140,7 +142,7 @@ describe("bundlePaths", () => {
     const storedSchemas: Record<string, ZodType> = {
       UserDTO: z.object({
         name: z.string(),
-        email: z.string().email(),
+        email: z.email(),
       }),
     };
 

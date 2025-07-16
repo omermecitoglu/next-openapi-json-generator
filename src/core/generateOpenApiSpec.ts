@@ -65,7 +65,7 @@ export default async function generateOpenApiSpec(schemas: Record<string, ZodTyp
     },
   };
 
-  return {
+  return JSON.parse(JSON.stringify({
     openapi: "3.1.0",
     info: {
       title: metadata.serviceName,
@@ -76,5 +76,5 @@ export default async function generateOpenApiSpec(schemas: Record<string, ZodTyp
     ...(clearUnusedSchemasOption ? clearUnusedSchemasFunction(pathsAndComponents) : pathsAndComponents),
     security,
     tags: [],
-  } as Omit<OpenApiDocument, "components"> & Required<Pick<OpenApiDocument, "components">>;
+  })) as Omit<OpenApiDocument, "components"> & Required<Pick<OpenApiDocument, "components">>;
 }

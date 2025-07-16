@@ -28,6 +28,8 @@ describe("bundleSchemas", () => {
       },
       additionalProperties: false,
       required: ["name", "age"],
+      // @ts-expect-error: @omer-x/openapi-types doesn't have this
+      $schema: "https://json-schema.org/draft/2020-12/schema",
     },
     Product: {
       type: "object",
@@ -41,12 +43,14 @@ describe("bundleSchemas", () => {
       },
       additionalProperties: false,
       required: ["title", "price"],
+      // @ts-expect-error: @omer-x/openapi-types doesn't have this
+      $schema: "https://json-schema.org/draft/2020-12/schema",
     },
   };
 
   it("should convert and mask schemas correctly", () => {
     const result = bundleSchemas(mockSchemas);
-    expect(result).toEqual(mockOpenAPISchemas);
+    expect(result).toStrictEqual(mockOpenAPISchemas);
   });
 
   it("should handle empty schemas object", () => {
