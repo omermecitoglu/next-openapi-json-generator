@@ -1,6 +1,6 @@
 {
   "name": "@omer-x/next-openapi-json-generator",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "a Next.js plugin to generate OpenAPI documentation from route handlers",
   "keywords": [
     "next.js",
@@ -45,24 +45,23 @@
     "dev": "tsup --watch",
     "build": "tsup"
   },
+  "peerDependencies": {
+    "@omer-x/next-openapi-route-handler": "^2",
+    "@omer-x/openapi-types": "^1",
+    "zod": "^4",
+    "typescript": "^5"
+  },
   "dependencies": {
     "@omer-x/package-metadata": "^1.0.2",
-    "minimatch": "^10.0.1",
-    "typescript": "^5.7.2",
-    "zod-to-json-schema": "^3.24.1"
+    "minimatch": "^10.0.3"
   },
   "devDependencies": {
-    "@omer-x/eslint-config": "^2.1.2",
-    "@types/node": "^22.10.2",
+    "@omer-x/eslint-config": "^2.1.3",
+    "@types/node": "^24.0.14",
     "@vitest/coverage-v8": "^3.2.4",
-    "eslint": "^9.16.0",
-    "semantic-release": "^24.2.0",
-    "tsup": "^8.3.5",
-    "vitest": "^3.2.4",
-    "zod": "^3.24.1"
-  },
-  "peerDependencies": {
-    "@omer-x/next-openapi-route-handler": "^1",
-    "@omer-x/openapi-types": "^1"
+    "eslint": "^9.31.0",
+    "semantic-release": "^24.2.7",
+    "tsup": "^8.5.0",
+    "vitest": "^3.2.4"
   }
 }
