@@ -34,12 +34,12 @@ async function safeEval(code: string, routePath: string) {
 }
 
 async function getModuleTranspiler() {
-  if (typeof require === "undefined") {
-    const { transpileModule } = await import(/* webpackIgnore: true */ "typescript");
-    return transpileModule;
+  if (typeof require !== "undefined" && typeof exports !== "undefined") {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    return require(/* webpackIgnore: true */ "typescript").transpileModule;
   }
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  return require(/* webpackIgnore: true */ "typescript").transpileModule;
+  const { transpileModule } = await import(/* webpackIgnore: true */ "typescript");
+  return transpileModule;
 }
 
 export async function getRouteExports(routePath: string, routeDefinerName: string, schemas: Record<string, unknown>) {
