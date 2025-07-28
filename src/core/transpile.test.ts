@@ -1,9 +1,10 @@
+import { transpileModule } from "typescript";
 import { describe, expect, it } from "vitest";
 import { transpile } from "./transpile";
 
 describe("transpile", () => {
   it("should inject export fixers", () => {
-    const result = transpile(true, "", null);
+    const result = transpile(true, "", null, transpileModule);
     expect(result).toContain("exports.GET = void 0;");
     expect(result).toContain("exports.POST = void 0;");
     expect(result).toContain("exports.PUT = void 0;");
@@ -14,7 +15,7 @@ describe("transpile", () => {
   });
 
   it("should inject a placeholder function for the middleware", () => {
-    const result = transpile(true, "", "myAwesomeMiddleware");
+    const result = transpile(true, "", "myAwesomeMiddleware", transpileModule);
     expect(result).toContain("const myAwesomeMiddleware = (handler) => handler;");
   });
 });

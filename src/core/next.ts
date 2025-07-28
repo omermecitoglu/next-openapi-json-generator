@@ -33,12 +33,20 @@ async function safeEval(code: string, routePath: string) {
   }
 }
 
+async function getModuleTranspiler() {
+  if (typeof require === "undefined") {
+    const { transpileModule } = await import(/* webpackIgnore: true */ "typescript");
+    return transpileModule;
+  }
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  return require(/* webpackIgnore: true */ "typescript").transpileModule;
+}
+
 export async function getRouteExports(routePath: string, routeDefinerName: string, schemas: Record<string, unknown>) {
   const rawCode = await fs.readFile(routePath, "utf-8");
   const middlewareName = detectMiddlewareName(rawCode);
   const isCommonJS = typeof module !== "undefined" && typeof module.exports !== "undefined";
-  const { transpileModule } = await import(/* webpackIgnore: true */ "typescript");
-  const code = transpile(isCommonJS, rawCode, middlewareName, transpileModule);
+  const code = transpile(isCommonJS, rawCode, middlewareName, await getModuleTranspiler());
   const fixedCode = Object.keys(schemas).reduce(injectSchemas, code);
   (global as Record<string, unknown>)[routeDefinerName] = defineRoute;
   (global as Record<string, unknown>).z = z;
