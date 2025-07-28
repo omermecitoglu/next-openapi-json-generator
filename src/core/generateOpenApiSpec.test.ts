@@ -78,11 +78,13 @@ describe("generateOpenApiSpec", () => {
             operationId: "getUsers",
             parameters: [
               {
+                description: "List of the column names",
                 in: "query",
                 name: "select",
                 required: true,
                 schema: {
                   default: [],
+                  description: "List of the column names",
                   items: {
                     enum: [
                       "id",
@@ -243,11 +245,13 @@ describe("generateOpenApiSpec", () => {
             operationId: "getUsers",
             parameters: [
               {
+                description: "List of the column names",
                 in: "query",
                 name: "select",
                 required: true,
                 schema: {
                   default: [],
+                  description: "List of the column names",
                   items: {
                     enum: [
                       "id",
