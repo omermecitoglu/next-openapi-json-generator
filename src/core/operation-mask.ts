@@ -1,11 +1,11 @@
 import maskWithReference from "./mask";
+import type { SchemaObject } from "@omer-x/json-schema-types";
 import type { MediaTypeObject } from "@omer-x/openapi-types/media-type";
 import type { OperationObject } from "@omer-x/openapi-types/operation";
 import type { ParameterObject } from "@omer-x/openapi-types/parameter";
 import type { ReferenceObject } from "@omer-x/openapi-types/reference";
 import type { RequestBodyObject } from "@omer-x/openapi-types/request-body";
 import type { ResponseObject, ResponsesObject } from "@omer-x/openapi-types/response";
-import type { SchemaObject } from "@omer-x/openapi-types/schema";
 import type { ZodType } from "zod";
 
 function maskSchema(storedSchemas: Record<string, ZodType>, schema?: SchemaObject) {

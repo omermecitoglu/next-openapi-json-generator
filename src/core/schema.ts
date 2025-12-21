@@ -1,6 +1,6 @@
 import maskWithReference from "./mask";
 import convertToOpenAPI from "./zod-to-openapi";
-import type { SchemaObject } from "@omer-x/openapi-types/schema";
+import type { SchemaObject } from "@omer-x/json-schema-types";
 import type { ZodType } from "zod";
 
 export function bundleSchemas(schemas: Record<string, ZodType>) {

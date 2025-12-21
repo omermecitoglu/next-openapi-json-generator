@@ -1,5 +1,5 @@
 import { type ZodObject, type ZodType, z } from "zod";
-import type { SchemaObject } from "@omer-x/openapi-types/schema";
+import type { SchemaObject } from "@omer-x/json-schema-types";
 
 function fixSchema(schema: ZodType<unknown>): ZodType<unknown> {
   if ("unwrap" in schema && typeof schema.unwrap === "function") {

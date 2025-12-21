@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import z from "zod";
 import convertToOpenAPI from "./zod-to-openapi";
-import type { SchemaObject } from "@omer-x/openapi-types/schema";
+import type { SchemaObject } from "@omer-x/json-schema-types";
 
 describe("convertToOpenAPI", () => {
   it("should convert a simple Zod schema to OpenAPI schema", () => {
