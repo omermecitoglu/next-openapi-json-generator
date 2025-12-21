@@ -1,5 +1,4 @@
 import { describe, expect, it } from "vitest";
-import { type ZodType, z } from "zod";
 import { bundlePaths, createRouteRecord } from "./route";
 import type { OperationObject } from "@omer-x/openapi-types/operation";
 
@@ -34,22 +33,15 @@ describe("bundlePaths", () => {
         apiData: { summary: "Create user" } as OperationObject,
       },
     ];
-    const storedSchemas: Record<string, ZodType> = {};
 
-    const result = bundlePaths(source, storedSchemas);
+    const result = bundlePaths(source);
 
     expect(result).toStrictEqual({
       "/users": {
         get: {
-          parameters: undefined,
-          requestBody: undefined,
-          responses: undefined,
           summary: "Get users",
         },
         post: {
-          parameters: undefined,
-          requestBody: undefined,
-          responses: undefined,
           summary: "Create user",
         },
       },
@@ -74,98 +66,21 @@ describe("bundlePaths", () => {
         apiData: { summary: "Get items" } as OperationObject,
       },
     ];
-    const storedSchemas: Record<string, ZodType> = {};
 
-    const result = bundlePaths(source, storedSchemas);
+    const result = bundlePaths(source);
 
     expect(result).toStrictEqual({
       "/items": {
         get: {
-          parameters: undefined,
-          requestBody: undefined,
-          responses: undefined,
           summary: "Get items",
         },
       },
       "/users": {
         get: {
-          parameters: undefined,
-          requestBody: undefined,
-          responses: undefined,
           summary: "Get users",
         },
         post: {
-          parameters: undefined,
-          requestBody: undefined,
-          responses: undefined,
           summary: "Create user",
-        },
-      },
-    });
-  });
-
-  it("should create references for the responses that are identical to pre-defined schemas", () => {
-    const source = [
-      {
-        method: "get",
-        path: "/user",
-        apiData: {
-          summary: "Get user",
-          responses: {
-            200: {
-              description: "Successful response",
-              content: {
-                "application/json": {
-                  schema: {
-                    type: "object",
-                    properties: {
-                      name: {
-                        type: "string",
-                      },
-                      email: {
-                        type: "string",
-                        format: "email",
-                        pattern: "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$",
-                      },
-                    },
-                    required: ["name", "email"],
-                    additionalProperties: false,
-                    $schema: "https://json-schema.org/draft/2020-12/schema",
-                  },
-                },
-              },
-            },
-          },
-        } as OperationObject,
-      },
-    ];
-    const storedSchemas: Record<string, ZodType> = {
-      UserDTO: z.object({
-        name: z.string(),
-        email: z.email(),
-      }),
-    };
-
-    const result = bundlePaths(source, storedSchemas);
-
-    expect(result).toStrictEqual({
-      "/user": {
-        get: {
-          parameters: undefined,
-          requestBody: undefined,
-          responses: {
-            200: {
-              content: {
-                "application/json": {
-                  schema: {
-                    $ref: "#/components/schemas/UserDTO",
-                  },
-                },
-              },
-              description: "Successful response",
-            },
-          },
-          summary: "Get user",
         },
       },
     });
@@ -199,9 +114,8 @@ describe("bundlePaths", () => {
         } as OperationObject,
       },
     ];
-    const storedSchemas: Record<string, ZodType> = {};
 
-    const result = bundlePaths(source, storedSchemas);
+    const result = bundlePaths(source);
 
     expect(result).toStrictEqual({
       "/user": {
@@ -211,7 +125,6 @@ describe("bundlePaths", () => {
               $ref: "#/components/parameters/QueryLimit",
             },
           ],
-          requestBody: undefined,
           responses: {
             200: {
               content: {
