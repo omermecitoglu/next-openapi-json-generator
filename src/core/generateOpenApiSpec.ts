@@ -1,4 +1,5 @@
 import path from "node:path";
+import { optimizeOpenApiSpec } from "@omer-x/openapi-optimizer";
 import getPackageMetadata from "@omer-x/package-metadata";
 import clearUnusedSchemasFunction from "./clearUnusedSchemas";
 import { filterDirectoryItems, getDirectoryItems } from "./dir";
@@ -78,5 +79,5 @@ export default async function generateOpenApiSpec(schemas: Record<string, ZodTyp
     tags: [],
   }));
 
-  return (spec) as Omit<OpenApiDocument, "components"> & Required<Pick<OpenApiDocument, "components">>;
+  return optimizeOpenApiSpec(spec) as Omit<OpenApiDocument, "components"> & Required<Pick<OpenApiDocument, "components">>;
 }
