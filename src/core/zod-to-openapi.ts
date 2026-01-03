@@ -1,4 +1,4 @@
-import { type ZodObject, type ZodType, z } from "zod";
+import { type ZodDefault, type ZodObject, type ZodType, z } from "zod";
 import type { SchemaObject } from "@omer-x/json-schema-types";
 
 function alterSchema(schema: ZodType<unknown>, newShape: ZodType<unknown>): ZodType<unknown> {
@@ -14,6 +14,10 @@ function fixSchema(schema: ZodType<unknown>): ZodType<unknown> {
       case "nullable": return alterSchema(schema, fixSchema(schema.unwrap()).nullable());
       case "optional": return alterSchema(schema, fixSchema(schema.unwrap()).optional());
       case "readonly": return alterSchema(schema, fixSchema(schema.unwrap()).readonly());
+      case "default": {
+        const defaultValue = (schema as unknown as ZodDefault)._zod.def.defaultValue;
+        return alterSchema(schema, fixSchema(schema.unwrap()).default(defaultValue));
+      }
       case "array": return alterSchema(schema, fixSchema(schema.unwrap()).array());
       default: throw new Error(`${schema._zod.def.type} type is not covered in fixSchema (@omer-x/next-openapi-json-generator")`);
     }
