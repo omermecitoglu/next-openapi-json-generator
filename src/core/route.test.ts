@@ -104,6 +104,94 @@ describe("bundlePaths", () => {
     });
   });
 
+  it("should preserve Xquik search operation parameters", () => {
+    const source = [
+      {
+        method: "get",
+        path: "/api/v1/x/tweets/search",
+        apiData: {
+          operationId: "searchTweets",
+          summary: "Search Tweets",
+          parameters: [
+            {
+              in: "query",
+              name: "q",
+              required: true,
+              schema: {
+                type: "string",
+              },
+            },
+            {
+              in: "query",
+              name: "queryType",
+              schema: {
+                enum: ["Latest", "Top"],
+                type: "string",
+              },
+            },
+            {
+              in: "header",
+              name: "x-api-key",
+              schema: {
+                type: "string",
+              },
+            },
+          ],
+          responses: {
+            200: {
+              content: undefined,
+              description: "Search results",
+            },
+          },
+        } as OperationObject,
+      },
+    ];
+    const storedSchemas: Record<string, ZodType> = {};
+
+    const result = bundlePaths(source, storedSchemas);
+
+    expect(result).toStrictEqual({
+      "/api/v1/x/tweets/search": {
+        get: {
+          operationId: "searchTweets",
+          parameters: [
+            {
+              in: "query",
+              name: "q",
+              required: true,
+              schema: {
+                type: "string",
+              },
+            },
+            {
+              in: "query",
+              name: "queryType",
+              schema: {
+                enum: ["Latest", "Top"],
+                type: "string",
+              },
+            },
+            {
+              in: "header",
+              name: "x-api-key",
+              schema: {
+                type: "string",
+              },
+            },
+          ],
+          requestBody: undefined,
+          responses: {
+            200: {
+              content: undefined,
+              description: "Search results",
+            },
+          },
+          summary: "Search Tweets",
+        },
+      },
+    });
+  });
+
   it("should create references for the responses that are identical to pre-defined schemas", () => {
     const source = [
       {
