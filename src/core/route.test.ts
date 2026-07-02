@@ -86,6 +86,77 @@ describe("bundlePaths", () => {
     });
   });
 
+  it("should not mutate header parameters, enum schemas, or undefined requestBody", () => {
+    const source = [
+      {
+        method: "get",
+        path: "/reports",
+        apiData: {
+          operationId: "listReports",
+          summary: "List reports",
+          parameters: [
+            {
+              in: "query",
+              name: "format",
+              schema: {
+                enum: ["json", "csv"],
+                type: "string",
+              },
+            },
+            {
+              in: "header",
+              name: "x-client-version",
+              schema: {
+                type: "string",
+              },
+            },
+          ],
+          requestBody: undefined,
+          responses: {
+            200: {
+              content: undefined,
+              description: "Report list",
+            },
+          },
+        } as OperationObject,
+      },
+    ];
+
+    const result = bundlePaths(source);
+
+    expect(result).toStrictEqual({
+      "/reports": {
+        get: {
+          operationId: "listReports",
+          parameters: [
+            {
+              in: "query",
+              name: "format",
+              schema: {
+                enum: ["json", "csv"],
+                type: "string",
+              },
+            },
+            {
+              in: "header",
+              name: "x-client-version",
+              schema: {
+                type: "string",
+              },
+            },
+          ],
+          requestBody: undefined,
+          responses: {
+            200: {
+              content: undefined,
+              description: "Report list",
+            },
+          },
+          summary: "List reports",
+        },
+      },
+    });
+  });
   it("should handle the cases where schema is undefined or referenced already", () => {
     const source = [
       {
