@@ -1,4 +1,4 @@
-import { omit } from "../utils/object";
+import { omit } from "@omer/object";
 import type { OpenApiDocument } from "@omer-x/openapi-types";
 import type { ComponentsObject } from "@omer-x/openapi-types/components";
 import type { PathsObject } from "@omer-x/openapi-types/paths";
