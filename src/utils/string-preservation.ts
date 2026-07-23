@@ -1,6 +1,6 @@
 import { generateRandomString } from "./generateRandomString";
 
-export function preserveStrings(code: string) {
+export function preserveStrings(code: string): { output: string, replacements: Record<string, string> } {
   let replacements = {} as Record<string, string>;
 
   const output = code.replace(/(['"`])((?:\\.|(?!\1).)*)\1/g, (match, quote, content) => {
@@ -14,7 +14,7 @@ export function preserveStrings(code: string) {
   return { output, replacements };
 }
 
-export function restoreStrings(code: string, replacements: Record<string, string>) {
+export function restoreStrings(code: string, replacements: Record<string, string>): string {
   return code.replace(/<@~(.*?)~@>/g, (_, replacementId) => {
     return replacements[replacementId];
   });

@@ -1,6 +1,6 @@
 import type { ZodType } from "zod";
 
-export function isFile(schema: ZodType<unknown>) {
+export function isFile(schema: ZodType<unknown>): boolean {
   // Test that it accepts a File AND rejects a plain object
   const file = new File([], "nothing.txt");
   const plainObject = { name: "test", size: 0 };

@@ -1,14 +1,19 @@
-import { omit } from "../utils/object";
+import { omit } from "@omer/object";
 import type { OpenApiDocument } from "@omer-x/openapi-types";
+import type { ComponentsObject } from "@omer-x/openapi-types/components";
+import type { PathsObject } from "@omer-x/openapi-types/paths";
 
-function countReferences(schemaName: string, source: string) {
+function countReferences(schemaName: string, source: string): number {
   return (source.match(new RegExp(`"#/components/schemas/${schemaName}"`, "g")) ?? []).length;
 }
 
 export default function clearUnusedSchemas({
   paths,
   components,
-}: Required<Pick<OpenApiDocument, "paths" | "components">>) {
+}: Required<Pick<OpenApiDocument, "paths" | "components">>): {
+  paths: PathsObject,
+  components: ComponentsObject,
+} {
   if (!components.schemas) return { paths, components };
   const stringifiedPaths = JSON.stringify(paths);
   const stringifiedSchemas = Object.fromEntries(Object.entries(components.schemas).map(([schemaName, schema]) => {

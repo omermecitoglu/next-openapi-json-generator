@@ -1,4 +1,5 @@
 import path from "node:path";
+import { optimizeOpenApiSpec } from "@omer-x/openapi-optimizer";
 import getPackageMetadata from "@omer-x/package-metadata";
 import clearUnusedSchemasFunction from "./clearUnusedSchemas";
 import { filterDirectoryItems, getDirectoryItems } from "./dir";
@@ -33,7 +34,7 @@ export default async function generateOpenApiSpec(schemas: Record<string, ZodTyp
   security,
   securitySchemes,
   clearUnusedSchemas: clearUnusedSchemasOption = true,
-}: GeneratorOptions = {}) {
+}: GeneratorOptions = {}): Promise<Omit<OpenApiDocument, "components"> & Required<Pick<OpenApiDocument, "components">>> {
   const verifiedOptions = verifyOptions(includeOption, excludeOption);
   const appFolderPath = await findAppFolderPath();
   if (!appFolderPath) throw new Error("This is not a Next.js application!");
@@ -58,14 +59,14 @@ export default async function generateOpenApiSpec(schemas: Record<string, ZodTyp
   const metadata = getPackageMetadata();
 
   const pathsAndComponents = {
-    paths: bundlePaths(validRoutes, schemas),
+    paths: bundlePaths(validRoutes),
     components: {
       schemas: bundleSchemas(schemas),
       securitySchemes,
     },
   };
 
-  return JSON.parse(JSON.stringify({
+  const spec = JSON.parse(JSON.stringify({
     openapi: "3.1.0",
     info: {
       title: metadata.serviceName,
@@ -76,5 +77,7 @@ export default async function generateOpenApiSpec(schemas: Record<string, ZodTyp
     ...(clearUnusedSchemasOption ? clearUnusedSchemasFunction(pathsAndComponents) : pathsAndComponents),
     security,
     tags: [],
-  })) as Omit<OpenApiDocument, "components"> & Required<Pick<OpenApiDocument, "components">>;
+  }));
+
+  return optimizeOpenApiSpec(spec) as Omit<OpenApiDocument, "components"> & Required<Pick<OpenApiDocument, "components">>;
 }
