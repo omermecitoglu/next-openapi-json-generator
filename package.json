@@ -56,6 +56,7 @@
   "dependencies": {
     "@omer-x/openapi-optimizer": "alpha",
     "@omer-x/package-metadata": "^1.0.2",
+    "@omer/object": "npm:@jsr/omer__object@^1.1.0",
     "minimatch": "^10.1.1"
   },
   "devDependencies": {
