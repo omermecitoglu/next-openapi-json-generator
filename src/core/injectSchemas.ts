@@ -1,6 +1,6 @@
 import { preserveStrings, restoreStrings } from "~/utils/string-preservation";
 
-export default function injectSchemas(code: string, refName: string) {
+export default function injectSchemas(code: string, refName: string): string {
   const { output: preservedCode, replacements } = preserveStrings(code);
 
   const preservedCodeWithSchemasInjected = preservedCode

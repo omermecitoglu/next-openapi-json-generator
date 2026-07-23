@@ -35,6 +35,6 @@ function fixSchema(schema: ZodType<unknown>): ZodType<unknown> {
   return schema;
 }
 
-export default function convertToOpenAPI(schema: ZodType<unknown>, isArray: boolean) {
+export default function convertToOpenAPI(schema: ZodType<unknown>, isArray: boolean): SchemaObject {
   return z.toJSONSchema(fixSchema(isArray ? schema.array() : schema)) as SchemaObject;
 }

@@ -8,15 +8,15 @@ export type RouteRecord = {
   apiData: OperationObject,
 };
 
-export function createRouteRecord(method: string, filePath: string, rootPath: string, apiData: OperationObject) {
+export function createRouteRecord(method: string, filePath: string, rootPath: string, apiData: OperationObject): RouteRecord {
   return {
     method: method.toLocaleLowerCase(),
     path: getRoutePathName(filePath, rootPath),
     apiData,
-  } as RouteRecord;
+  };
 }
 
-export function bundlePaths(source: RouteRecord[]) {
+export function bundlePaths(source: RouteRecord[]): PathsObject {
   source.sort((a, b) => a.path.localeCompare(b.path));
   return source.reduce((collection, route) => ({
     ...collection,

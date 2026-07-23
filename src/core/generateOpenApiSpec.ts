@@ -34,7 +34,7 @@ export default async function generateOpenApiSpec(schemas: Record<string, ZodTyp
   security,
   securitySchemes,
   clearUnusedSchemas: clearUnusedSchemasOption = true,
-}: GeneratorOptions = {}) {
+}: GeneratorOptions = {}): Promise<Omit<OpenApiDocument, "components"> & Required<Pick<OpenApiDocument, "components">>> {
   const verifiedOptions = verifyOptions(includeOption, excludeOption);
   const appFolderPath = await findAppFolderPath();
   if (!appFolderPath) throw new Error("This is not a Next.js application!");
