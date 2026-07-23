@@ -51,7 +51,7 @@
   "peerDependencies": {
     "@omer-x/next-openapi-route-handler": "^2",
     "@omer-x/openapi-types": "^1",
-    "typescript": "^5",
+    "typescript": "^5 || ^6",
     "zod": "^4"
   },
   "dependencies": {
