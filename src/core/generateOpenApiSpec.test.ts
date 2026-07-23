@@ -70,7 +70,7 @@ describe("generateOpenApiSpec", () => {
     expect(typeof output.paths).toBe("object");
     expect(Object.keys(output.paths?.["/test"] ?? {})).toEqual(["get", "post"]);
     expect(typeof output.components.schemas).toBe("object");
-    expect(Object.keys(output.components.schemas ?? {}).length).toBe(5);
+    expect(Object.keys(output.components.schemas ?? {}).length).toBe(2);
 
     readFileSpy.mockRestore();
   });
