@@ -29,14 +29,15 @@
   },
   "license": "MIT",
   "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist/"
   ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "import": "./dist/index.js"
     }
   },
   "scripts": {
@@ -44,8 +45,8 @@
     "lint:fix": "eslint --fix --flag unstable_native_nodejs_ts_config",
     "test": "vitest run --coverage",
     "test:watch": "vitest --coverage",
-    "dev": "tsup --watch",
-    "build": "tsup"
+    "dev": "tsdown --watch",
+    "build": "tsdown"
   },
   "peerDependencies": {
     "@omer-x/next-openapi-route-handler": "^2",
@@ -65,7 +66,7 @@
     "@vitest/coverage-v8": "^4.0.16",
     "eslint": "^9.39.2",
     "semantic-release": "^25.0.2",
-    "tsup": "^8.5.1",
+    "tsdown": "^0.22.13",
     "vitest": "^4.0.16"
   }
 }
