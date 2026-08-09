@@ -24,7 +24,6 @@
 
 To use `@omer-x/next-openapi-json-generator`, you'll need the following dependencies in your Next.js project:
 
-- [TypeScript](https://www.typescriptlang.org/) >= v5
 - [Next.js](https://nextjs.org/) >= v13
 - [Zod](https://zod.dev/) >= v3
 - [Next OpenAPI Route Handler](https://www.npmjs.com/package/@omer-x/next-openapi-route-handler)

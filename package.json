@@ -51,14 +51,14 @@
   "peerDependencies": {
     "@omer-x/next-openapi-route-handler": "^2",
     "@omer-x/openapi-types": "^1",
-    "typescript": "^5 || ^6",
     "zod": "^4"
   },
   "dependencies": {
     "@omer-x/openapi-optimizer": "alpha",
     "@omer-x/package-metadata": "^1.0.2",
     "@omer/object": "npm:@jsr/omer__object@^1.1.0",
-    "minimatch": "^10.2.5"
+    "minimatch": "^10.2.5",
+    "sucrase": "^3.35.1"
   },
   "devDependencies": {
     "@omer-x/eslint-config": "^2.3.3",
@@ -67,6 +67,7 @@
     "eslint": "^9.39.2",
     "semantic-release": "^25.0.8",
     "tsdown": "^0.22.13",
+    "typescript": "^6",
     "vitest": "^4.1.10"
   }
 }

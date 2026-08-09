@@ -1,10 +1,9 @@
-import { transpileModule } from "typescript";
 import { describe, expect, it } from "vitest";
 import { transpile } from "./transpile";
 
 describe("transpile", () => {
   it("should inject export fixers", () => {
-    const result = transpile(true, "", null, transpileModule);
+    const result = transpile("", null);
     expect(result).toContain("exports.GET = void 0;");
     expect(result).toContain("exports.POST = void 0;");
     expect(result).toContain("exports.PUT = void 0;");
@@ -15,7 +14,16 @@ describe("transpile", () => {
   });
 
   it("should inject a placeholder function for the middleware", () => {
-    const result = transpile(true, "", "myAwesomeMiddleware", transpileModule);
+    const result = transpile("", "myAwesomeMiddleware");
     expect(result).toContain("const myAwesomeMiddleware = (handler) => handler;");
+  });
+
+  it("should strip types and emit CommonJS exports", () => {
+    const result = transpile([
+      "type Params = { id: string };",
+      "export const GET = (p: Params): string => p.id satisfies string;",
+    ].join("\n"), null);
+    expect(result).not.toContain("type Params");
+    expect(result).toContain("exports.GET =");
   });
 });
