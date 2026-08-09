@@ -1,5 +1,5 @@
+import { transform } from "sucrase";
 import removeImports from "~/utils/removeImports";
-import type ts from "typescript";
 
 function fixExportsInCommonJS(code: string): string {
   const validMethods = ["GET", "POST", "PUT", "PATCH", "DELETE"];
@@ -12,27 +12,14 @@ function injectMiddlewareFixer(middlewareName: string): string {
   return `const ${middlewareName} = (handler) => handler;`;
 }
 
-export function transpile(
-  isCommonJS: boolean,
-  rawCode: string,
-  middlewareName: string | null,
-  transpileModule: (input: string, transpileOptions: ts.TranspileOptions) => ts.TranspileOutput,
-): string {
+export function transpile(rawCode: string, middlewareName: string | null): string {
   const parts = [
     middlewareName ? injectMiddlewareFixer(middlewareName) : "",
     removeImports(rawCode),
   ];
-  const output = transpileModule(parts.join("\n"), {
-    compilerOptions: {
-      module: isCommonJS ? 3 : 99,
-      target: 99,
-      sourceMap: false,
-      inlineSourceMap: false,
-      inlineSources: false,
-    },
+  const { code } = transform(parts.join("\n"), {
+    transforms: ["typescript", "imports"],
+    disableESTransforms: true,
   });
-  if (isCommonJS) {
-    return fixExportsInCommonJS(output.outputText);
-  }
-  return output.outputText;
+  return fixExportsInCommonJS(code);
 }
