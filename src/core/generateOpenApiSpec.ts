@@ -22,6 +22,7 @@ type GeneratorOptions = {
   security?: OpenApiDocument["security"],
   securitySchemes?: ComponentsObject["securitySchemes"],
   clearUnusedSchemas?: boolean,
+  optimize?: boolean,
 };
 
 export default async function generateOpenApiSpec(schemas: Record<string, ZodType>, {
@@ -34,6 +35,7 @@ export default async function generateOpenApiSpec(schemas: Record<string, ZodTyp
   security,
   securitySchemes,
   clearUnusedSchemas: clearUnusedSchemasOption = true,
+  optimize = true,
 }: GeneratorOptions = {}): Promise<Omit<OpenApiDocument, "components"> & Required<Pick<OpenApiDocument, "components">>> {
   const verifiedOptions = verifyOptions(includeOption, excludeOption);
   const appFolderPath = await findAppFolderPath();
@@ -79,5 +81,7 @@ export default async function generateOpenApiSpec(schemas: Record<string, ZodTyp
     tags: [],
   }));
 
-  return optimizeOpenApiSpec(spec) as Omit<OpenApiDocument, "components"> & Required<Pick<OpenApiDocument, "components">>;
+  type GeneratedSpec = Omit<OpenApiDocument, "components"> & Required<Pick<OpenApiDocument, "components">>;
+  if (!optimize) return spec as GeneratedSpec;
+  return optimizeOpenApiSpec(spec) as GeneratedSpec;
 }

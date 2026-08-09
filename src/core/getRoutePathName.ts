@@ -5,5 +5,6 @@ export default function getRoutePathName(filePath: string, rootPath: string): st
   return "/" + path.relative(rootPath, dirName)
     .replaceAll("[", "{")
     .replaceAll("]", "}")
-    .replaceAll("\\", "/");
+    .replaceAll("\\", "/")
+    .replaceAll(/\([^)]*\)\//g, "");
 }

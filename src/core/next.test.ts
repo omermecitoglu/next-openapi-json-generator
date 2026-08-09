@@ -62,16 +62,15 @@ describe("getRouteExports", () => {
   });
 
   it("should handle errors during evaluation", async () => {
-    const error = new Error("Eval error");
-    const evalSpy = vi.spyOn(global, "eval").mockImplementation(() => {
-      throw error;
-    });
+    vi.spyOn(fs, "readFile").mockResolvedValueOnce([
+      "import defineRoute from \"@omer-x/next-openapi-route-handler\";",
+      "export const GET = (() => { throw new Error(\"Eval error\"); })();",
+    ].join("\n"));
     const consoleLogSpy = vi.spyOn(console, "log").mockImplementation(() => { /* do nothing */ });
 
-    await expect(getRouteExports(mockRoutePath, mockRouteDefinerName, mockSchemas)).rejects.toThrow(error);
+    await expect(getRouteExports(mockRoutePath, mockRouteDefinerName, mockSchemas)).rejects.toThrow("Eval error");
     expect(consoleLogSpy).toHaveBeenCalledWith(`An error occured while evaluating the route exports from "${mockRoutePath}"`);
 
-    evalSpy.mockRestore();
     consoleLogSpy.mockRestore();
   });
 });
