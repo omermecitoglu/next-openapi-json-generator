@@ -53,12 +53,24 @@ export async function getRouteExports(
   const middlewareName = detectMiddlewareName(rawCode);
   const code = transpile(true, rawCode, middlewareName, await getModuleTranspiler());
   const fixedCode = Object.keys(schemas).reduce(injectSchemas, code);
-  (global as Record<string, unknown>)[routeDefinerName] = defineRoute;
-  (global as Record<string, unknown>).z = z;
-  (global as Record<string, unknown>).schemas = schemas;
-  const result = safeEval(fixedCode, routePath);
-  delete (global as Record<string, unknown>).schemas;
-  delete (global as Record<string, unknown>)[routeDefinerName];
-  delete (global as Record<string, unknown>).z;
-  return result;
+  const globalScope = global as Record<string, unknown>;
+  const originalDescriptors = new Map<string, PropertyDescriptor | undefined>([
+    [routeDefinerName, Object.getOwnPropertyDescriptor(global, routeDefinerName)],
+    ["z", Object.getOwnPropertyDescriptor(global, "z")],
+    ["schemas", Object.getOwnPropertyDescriptor(global, "schemas")],
+  ]);
+  try {
+    globalScope[routeDefinerName] = defineRoute;
+    globalScope.z = z;
+    globalScope.schemas = schemas;
+    return safeEval(fixedCode, routePath);
+  } finally {
+    for (const [key, descriptor] of originalDescriptors) {
+      if (descriptor) {
+        Object.defineProperty(global, key, descriptor);
+      } else {
+        delete globalScope[key];
+      }
+    }
+  }
 }
