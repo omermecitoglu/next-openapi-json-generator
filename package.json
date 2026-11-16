@@ -56,12 +56,12 @@
   "dependencies": {
     "@omer-x/openapi-optimizer": "alpha",
     "@omer-x/package-metadata": "^1.0.2",
-    "@omer/object": "npm:@jsr/omer__object@^1.1.0",
     "minimatch": "^10.2.5",
     "sucrase": "^3.35.1"
   },
   "devDependencies": {
     "@omer-x/eslint-config": "^2.3.3",
+    "@omer/object": "npm:@jsr/omer__object@^1.1.0",
     "@types/node": "^26.1.1",
     "@vitest/coverage-v8": "^4.1.10",
     "eslint": "^9.39.2",
